@@ -200,6 +200,7 @@ var _default =
           if (res.data.Success) {
             console.log(9999, res);
             _this.video = res.data.Data.model[0];
+            console.log(_this.video.Path);
             _this.like = res.data.Data.collections;
             _this.thumbs = res.data.Data.thumbs;
           } else {
