@@ -1,0 +1,1 @@
+<view class="container"><view class="headImg _div"><open-data type="userAvatarUrl"></open-data></view><view class="searchInpt _div"><icon type="search" size="16"></icon><input class="input" type="text" placeholder="请输入关键字"/></view></view>
