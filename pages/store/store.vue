@@ -1,14 +1,14 @@
 <template>
 	<view>
 		<div class="container">
-			<div v-for="(item, i) in goods" class="item" :key="i">
+			<div v-for="(item, i) in videoList" class="item" :key="i">
 				<div class="img">
-					<img src="../../static/cover.png" alt="">
+					<img :src="fileUrl + item.Cover">
 				</div>
 				<div>
-					<p class="title">{{item.title}}</p>
+					<p class="title">{{item.Titel}}</p>
 					<div class="buy">
-						<p style="margin-right: 30px">{{item.price}}</p>
+						<p style="margin-right: 30px">{{item.Price}}</p>
 						<div style="padding: 5px 20px;color: #fff;background: #F0AD4E;border-radius: 20px;font-size: 32rpx">前往购买</div>
 					</div>
 				</div>
@@ -21,6 +21,15 @@
 	export default {
 		data() {
 			return {
+				page: {
+					page: 1,
+					row: 20,
+					total: 0
+				},
+				url: 'http://124.71.148.15:8004',
+				fileUrl: 'http://124.71.148.15:8004/Data',
+				search: '',
+				videoList:[],
 				goods: [
 					{
 						imgUrl: '',
@@ -39,6 +48,43 @@
 					},
 				]
 			};
+		},
+		created() {
+			this.getList()
+		},
+		methods: {
+			getList() {
+				let data = {
+					pageIndex: this.page.page,
+					pageSize: this.page.row,
+					search: this.search,
+					videoType: this.videoType
+				}
+				var _this = this
+				uni.request({
+					url: this.url + '/Home/GetVideoList',
+					method: 'GET',
+					data: data,
+					success(res) {
+						if(res.data.Success) {
+							_this.videoList = res.data.Data.list
+						} else {
+							uni.showToast({
+								title: res.data.Message,
+								icon:'none',
+								duration: 2000
+							});
+						}
+					},
+					fail(res) {
+						uni.showToast({
+							title: res.data.Message,
+							icon:'none',
+							duration: 2000
+						});
+					}
+				})
+			},
 		}
 	}
 </script>

@@ -77,7 +77,13 @@
 										   	method: 'POST',
 										   	data: data,
 											success(res3) {
-												console.log(res3)
+												uni.setStorage({
+													key: 'memberId',
+													data:res3.data.Data.memberId,
+													success() {
+														_this.token = res3.data.Data.wxKey
+													}
+												})
 												uni.setStorage({
 													key: 'token',
 													data:res3.data.Data.wxKey,

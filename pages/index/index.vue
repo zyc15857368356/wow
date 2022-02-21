@@ -19,7 +19,7 @@
 			</div>
 			<div class="videos">
 				<div class="item" v-for="(item, i) in videoList" :key="i" @click="watchVideo(item)">
-					<img src="../../static/cover.png" style="width: 100%;height: 100px;display: block;">
+					<img :src="fileUrl+item.Cover" style="width: 100%;height: 100px;display: block;">
 					<p>{{item.Titel}}</p>
 					<!-- <p class="tag">{{item.tag}}</p> -->
 				</div>

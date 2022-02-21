@@ -42,8 +42,8 @@ page {
 }
 .handle {
   position: absolute;
-  bottom: 10px;
-  right: 0;
+  bottom: 5%;
+  right: 7%;
 }
 .handle > ._div ._p {
   color: #fff;
