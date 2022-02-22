@@ -89,4 +89,34 @@ wx-swiper .wx-swiper-dot {
   padding: 0 10px;
   margin-top: 40rpx;
 }
+.container1 {
+  position: fixed;
+}
+.container1 > ._div {
+  display: flex;
+  padding: 10px 10px;
+  align-items: center;
+  background: #fff;
+  border-radius: 5px;
+}
+.headImg {
+  width: 90rpx;
+  height: 90rpx;
+  border-radius: 50%;
+  border: 1px solid #ccc;
+  margin-right: 10px;
+  overflow: hidden;
+}
+.searchInpt {
+  background: #eee;
+  height: 30px;
+  border-radius: 20px;
+  display: flex;
+  padding-left: 10px;
+  align-items: center;
+}
+.searchInpt input {
+  margin-left: 10px;
+  font-size: 12px;
+}
 

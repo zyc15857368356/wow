@@ -25,7 +25,7 @@
 		data() {
 			return {
 				url: 'http://124.71.148.15:8004',
-				fileUrl: 'http://124.71.148.15:8004/Data/',
+				fileUrl: 'http://124.71.148.15:8004/Video/',
 				autoplay: true,
 				like: false,
 				collect: false,
@@ -40,57 +40,62 @@
 		onLoad(option) {
 			this.path = option.path
 			this.id = option.id
-			this.getVideoInfo()
-			var _this = this
+		},
+		
+		onShow() {
+			var that = this
 			uni.getStorage({
 				key: "token",
 				success(res) {
-					_this.token = res.data
+					that.token = res.data
 				}
 			})
 			uni.getStorage({
 				key: "memberId",
 				success(res) {
-					_this.memberId = res.data
+					that.memberId = res.data
 				}
 			})
+			this.getVideoInfo()
 		},
 		methods: {
 			getVideoInfo() {
-				var _this = this
-				uni.request({
-					url: this.url + '/Home/GetVideoInfo',
-					methods: "GET",
-					data: {
-						id: this.id
-					},
-					success(res) {
-						if (res.data.Success) {
-							console.log(9999, res)
-							_this.video = res.data.Data.model[0]
-							console.log(_this.video.Path)
-							_this.like = res.data.Data.collections
-							_this.thumbs = res.data.Data.thumbs
-						} else {
+				new Promise((resolve, reject) => {
+					let mId = ''
+					uni.getStorage({
+						key: "memberId",
+						success(res) {
+							mId = res.data
+							resolve(mId)
+						},
+						fail() {
 							uni.showToast({
-								title: res.data.Message,
-								type: 'error',
+								title: "请登录",
 								icon: "none"
 							})
 						}
-					},
-					fail(res) {
-						uni.showToast({
-							title: res.data.Message,
-							type: 'error',
-							icon: "none"
-						})
-					}
+					})
+				}).then(response => {
+					var _this = this
+					uni.request({
+						url: this.url + '/Home/GetVideoInfo',
+						methods: 'GET',
+						data:{
+							id: this.id,
+							memberId: response
+						},
+						success(res) {
+							_this.video = res.data.Data.model[0]
+							_this.like = res.data.Data.thumbs
+							_this.collect = res.data.Data.collections
+							console.log(_this.video)
+						}
+					})
 				})
 			},
 			addLike() {
 				var _this = this
-				if (!this.token) {
+				if (!this.memberId) {
 					uni.showToast({
 						title: '请先完成登录后再试',
 						icon: 'none'
@@ -98,74 +103,29 @@
 				} else {
 					uni.request({
 						url: this.url + '/Home/AddVideoInfo',
-						method: "POST",
-						data:{
-							Type: 0,
-							MemberId: _this.memberId,
-							VideoId: _this.id
+						method: 'POST',
+						data: {
+							MemberId: this.memberId,
+							VideoId: this.id,
+							Type: 0
 						},
 						success(res) {
-							if(res.data.Success){
-								
+							if (res.data.Success) {
+								_this.like = !_this.like
 							} else {
 								uni.showToast({
 									title:res.data.Message,
-									type:'error',
-									icon:"none"
-								})
-							}
-						},
-						fail(res) {
-							uni.showToast({
-								title:res.data.Message,
-								type:'error'
-							})
-						}
-					})
-				}
-				this.like = !this.like
-			},
-			addCollect() {
-				var _this = this
-				if (!this.token) {
-					uni.showToast({
-						title: '请先完成登录后再试',
-						icon: 'none'
-					})
-				} else {
-					uni.request({
-						url: this.url + '/Home/AddVideoInfo',
-						method: "POST",
-						data:{
-							Type: 0,
-							MemberId: _this.memberId,
-							VideoId: _this.id
-						},
-						success(res) {
-							if(res.data.Success){
-								
-							} else {
-								uni.showToast({
-									title:res.data.Message,
-									type:'error',
 									icon: "none"
 								})
 							}
-						},
-						fail(res) {
-							uni.showToast({
-								title:res.data.Message,
-								type:'error',
-								icon: "none"
-							})
 						}
 					})
 				}
-				this.collect = !this.collect
 			},
-			addBuy() {
+			addCollect() {
 				var _this = this
-				if (!this.token) {
+				console.log(this.memberId)
+				if (!this.memberId) {
 					uni.showToast({
 						title: '请先完成登录后再试',
 						icon: 'none'
@@ -173,33 +133,53 @@
 				} else {
 					uni.request({
 						url: this.url + '/Home/AddVideoInfo',
-						method: "POST",
-						data:{
-							Type: 0,
-							MemberId: _this.memberId,
-							VideoId: _this.id
+						method: 'POST',
+						data: {
+							MemberId: this.memberId,
+							VideoId: this.id,
+							Type: 1
 						},
 						success(res) {
-							if(res.data.Success){
-								
+							if (res.data.Success) {
+								_this.collect = !_this.collect
 							} else {
 								uni.showToast({
 									title:res.data.Message,
-									type:'error',
-								icon: "none"
+									icon: "none"
 								})
 							}
-						},
-						fail(res) {
-							uni.showToast({
-								title:res.data.Message,
-								type:'error',
-								icon: "none"
-							})
 						}
 					})
 				}
-				this.car = !this.car
+			},
+			addBuy() {
+				var _this = this
+				if (!this.memberId) {
+					uni.showToast({
+						title: '请先完成登录后再试',
+						icon: 'none'
+					})
+				} else {
+					uni.request({
+						url: this.url + '/Home/AddVideoInfo',
+						method: 'POST',
+						data: {
+							MemberId: this.memberId,
+							VideoId: this.id,
+							Type: 2
+						},
+						success(res) {
+							if (res.data.Success) {
+								_this.car = !_this.car
+							} else {
+								uni.showToast({
+									title:res.data.Message,
+									icon: "none"
+								})
+							}
+						}
+					})
+				}
 			}
 		}
 	}
@@ -224,8 +204,8 @@
 	}
 	.handle{
 		position: absolute;
-		bottom: 5%;
-		right: 7%;
+		bottom: 21px;
+		right: 17px;
 		&>div{
 			p{
 				color: #fff;

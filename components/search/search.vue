@@ -5,7 +5,7 @@
 		</div>
 		<div class="searchInpt">
 			<icon type="search" size="16"></icon>
-			<input type="text" class="input" placeholder="请输入关键字">
+			<input type="text" class="input" placeholder="请输入关键字" confirm-type="search" @confirm="search()">
 		</div>
 	</view>
 </template>
@@ -20,6 +20,9 @@
 		created() {
 		},
 		methods: {
+			search() {
+				console.log(111)
+			} 
 		}
 	}
 </script>

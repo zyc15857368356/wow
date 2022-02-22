@@ -1,43 +1,56 @@
 <template>
 	<view class="container">
-		<search></search>
-		<div class="box">
-			<div class="types">
-				<div v-for="(item, i) in typeList" :key="i">
-					<p class="typeTitle" :class="{selected: item.select}" @click="chose(i)">{{item.title}}</p>
+		<div class="container1">
+			<div>
+				<div class="headImg">
+					<open-data type="userAvatarUrl"></open-data>
+				</div>
+				<div class="searchInpt">
+					<icon type="search" size="16"></icon>
+					<input type="text" class="input" v-model="search" placeholder="请输入关键字" confirm-type="search" @confirm="getList()">
+				</div>
+			</div>
+			<div class="box">
+				<div class="types">
+					<div v-for="(item, i) in typeList" :key="i">
+						<p class="typeTitle" :class="{selected: item.select}" @click="chose(i)">{{item.title}}</p>
+					</div>
 				</div>
 			</div>
 		</div>
-		<div class="body">
-			<div style="border-radius: 5px;overflow: hidden;">
-				<swiper class="swiper" :indicator-dots="indicatorDots" :autoplay="autoplay" indicator-color="rgba(255, 255, 255, 0.5)" indicator-active-color="#fff">
-					<swiper-item v-for="(item, i) in swiperList" :key="i">
-						<img :src="fileUrl+item.Cover">
-						<p class="swiperTitle">{{item.Titel}}</p>
-					</swiper-item>
-				</swiper>
-			</div>
-			<div class="videos">
-				<div class="item" v-for="(item, i) in videoList" :key="i" @click="watchVideo(item)">
-					<img :src="fileUrl+item.Cover" style="width: 100%;height: 100px;display: block;">
-					<p>{{item.Titel}}</p>
-					<!-- <p class="tag">{{item.tag}}</p> -->
+		<div style="margin-top: 130px">
+			<scroll-view style="height: calc( 100vh - 130px )" :scroll-top="scrollTop" scroll-y="true" class="scroll-Y" @scrolltoupper="upper" @scrolltolower="lower"
+				@scroll="scroll">
+				<div class="body">
+				<div style="border-radius: 5px;overflow: hidden;">
+					<swiper class="swiper" :indicator-dots="indicatorDots" :autoplay="autoplay" indicator-color="rgba(255, 255, 255, 0.5)" indicator-active-color="#fff">
+						<swiper-item v-for="(item, i) in swiperList" :key="i">
+							<img :src="imgUrl+item.Cover" style="width: 100%">
+							<p class="swiperTitle">{{item.Titel}}</p>
+						</swiper-item>
+					</swiper>
+				</div>
+				<div class="videos">
+					<div class="item" v-for="(item, i) in videoList" :key="i" @click="watchVideo(item)">
+						<img :src="imgUrl+item.Cover" style="width: 100%;height: 100px;display: block;">
+						<p>{{item.Titel}}</p>
+					</div>
 				</div>
 			</div>
+			</scroll-view>
 		</div>
+
 	</view>
 </template>
 
 <script>
-	import search from "../../components/search/search.vue"
 	export default {
-		components: {
-			search
-		},
 		data() {
 			return {
 				url: 'http://124.71.148.15:8004',
 				fileUrl: 'http://124.71.148.15:8004/Data',
+				imgUrl: 'http://124.71.148.15:8004/Image/',
+				videoUrl: 'http://124.71.148.15:8004/Data/Video/',
 				indicatorDots: true,
 				autoplay: true,
 				title: 'Hello',
@@ -102,6 +115,46 @@
 			this.getList()
 		},
 		methods: {
+			scroll() {
+				
+			},
+			lower() {
+				this.page.page += 1
+				let data = {
+					pageIndex: this.page.page,
+					pageSize: this.page.row,
+					search: this.search,
+					videoType: this.videoType
+				}
+				var _this = this
+				uni.request({
+					url: this.url + '/Home/GetVideoList',
+					method: 'GET',
+					data: data,
+					success(res) {
+						if(res.data.Success) {
+							_this.videoList.push.apply(_this.videoList, res.data.Data.list);
+						} else {
+							uni.showToast({
+								title: res.data.Message,
+								icon:'none',
+								duration: 2000
+							});
+						}
+					},
+					fail(res) {
+						uni.showToast({
+							title: res.data.Message,
+							icon:'none',
+							duration: 2000
+						});
+					}
+				})
+			},
+			upper() {
+				this.page.page = 1
+				this.getList()
+			},
 			getList() {
 				let data = {
 					pageIndex: this.page.page,
@@ -118,6 +171,7 @@
 						if(res.data.Success) {
 							_this.videoList = res.data.Data.list
 							_this.swiperList = res.data.Data.recomd
+							_this.search = ''
 						} else {
 							uni.showToast({
 								title: res.data.Message,
@@ -218,6 +272,36 @@
 			font-size: 32rpx;
 			padding: 0 10px;
 			margin-top: 40rpx
+		}
+	}
+	.container1{
+		position: fixed;
+	}
+	.container1>div{
+		display: flex;
+		padding: 10px 10px;
+		align-items: center;
+		background: #fff;
+		border-radius: 5px;
+	}
+	.headImg{
+		width: 90rpx;
+		height:90rpx;
+		border-radius: 50%;
+		border:1px solid #ccc;
+		margin-right:10px;
+		overflow: hidden;
+	}
+	.searchInpt{
+		background: #eee;
+		height: 30px;
+		border-radius: 20px;
+		display: flex;
+		padding-left:10px;
+		align-items: center;
+		input{
+			margin-left:10px;
+			font-size: 12px;
 		}
 	}
 </style>

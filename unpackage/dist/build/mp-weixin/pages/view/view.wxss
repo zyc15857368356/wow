@@ -1,0 +1,1 @@
+page{background:rgba(0,0,0,.8);overflow:hidden}.container{height:100%;position:relative}.video{width:100%;position:absolute;left:0;top:50%;-webkit-transform:translateY(-50%);transform:translateY(-50%)}.handle{position:absolute;bottom:10px;right:0}.handle > ._div ._p{color:#fff;font-size:32rpx}.handle > ._div ._img{display:block;width:60rpx;height:60rpx}

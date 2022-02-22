@@ -1,0 +1,1 @@
+.container{padding:0 20rpx}.item{margin-top:20rpx;border-radius:20rpx;background:#fff;padding:40rpx;display:flex;justify-content:space-between}.item > .img{width:240rpx;height:240rpx;overflow:hidden}.item > .img ._img{display:block;width:100%;height:100%}.title{height:180rpx}.buy{display:flex}

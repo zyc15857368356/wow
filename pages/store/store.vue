@@ -1,9 +1,11 @@
 <template>
 	<view>
+		<scroll-view style="height: 100vh" :scroll-top="scrollTop" scroll-y="true" class="scroll-Y" @scrolltoupper="upper" @scrolltolower="lower"
+			@scroll="scroll">
 		<div class="container">
 			<div v-for="(item, i) in videoList" class="item" :key="i">
 				<div class="img">
-					<img :src="fileUrl + item.Cover">
+					<img :src="imgUrl+item.Cover" alt="">
 				</div>
 				<div>
 					<p class="title">{{item.Titel}}</p>
@@ -14,6 +16,7 @@
 				</div>
 			</div>
 		</div>
+		</scroll-view>
 	</view>
 </template>
 
@@ -21,38 +24,62 @@
 	export default {
 		data() {
 			return {
+				imgUrl: 'http://124.71.148.15:8004/Image/',
+				videoList: [],
+				url: 'http://124.71.148.15:8004',
+				videoType: 0,
 				page: {
 					page: 1,
 					row: 20,
 					total: 0
 				},
-				url: 'http://124.71.148.15:8004',
-				fileUrl: 'http://124.71.148.15:8004/Data',
-				search: '',
-				videoList:[],
-				goods: [
-					{
-						imgUrl: '',
-						title: 'asdaasd',
-						price: 20
-					},
-					{
-						imgUrl: '',
-						title: 'asdasdasd',
-						price: 20
-					},
-					{
-						imgUrl: '',
-						title: 'asdasdasd',
-						price: 20
-					},
-				]
+				search: ''
 			};
 		},
-		created() {
+		onLoad() {
 			this.getList()
 		},
-		methods: {
+		methods:{
+			scroll() {
+				
+			},
+			lower() {
+				this.page.page += 1
+				let data = {
+					pageIndex: this.page.page,
+					pageSize: this.page.row,
+					search: this.search,
+					videoType: this.videoType
+				}
+				var _this = this
+				uni.request({
+					url: this.url + '/Home/GetVideoList',
+					method: 'GET',
+					data: data,
+					success(res) {
+						if(res.data.Success) {
+							_this.videoList.push.apply(_this.videoList, res.data.Data.list);
+						} else {
+							uni.showToast({
+								title: res.data.Message,
+								icon:'none',
+								duration: 2000
+							});
+						}
+					},
+					fail(res) {
+						uni.showToast({
+							title: res.data.Message,
+							icon:'none',
+							duration: 2000
+						});
+					}
+				})
+			},
+			upper() {
+				this.page.page = 1
+				this.getList()
+			},
 			getList() {
 				let data = {
 					pageIndex: this.page.page,
