@@ -33,6 +33,10 @@
   border-radius: 20rpx;
   overflow: hidden;
 }
+.headImg ._img {
+  width: 100%;
+  height: 100%;
+}
 .info {
   background: #fff;
   border-radius: 10rpx;

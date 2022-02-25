@@ -17,11 +17,28 @@
 				
 			};
 		},
+		onLoad() {
+			uni.getStorage({
+				key: "avatarUrl",
+				success(res) {
+					console.log(1111, res)
+				}
+			})
+		},
+		onShow() {
+			uni.getStorage({
+				key: "avatarUrl",
+				success(res) {
+					console.log(1111, res)
+				}
+			})
+		},
 		created() {
+
 		},
 		methods: {
 			search() {
-				console.log(111)
+				
 			} 
 		}
 	}

@@ -24,8 +24,8 @@
 	export default {
 		data() {
 			return {
-				url: 'http://124.71.148.15:8004',
-				fileUrl: 'http://124.71.148.15:8004/Video/',
+				url: 'https://www.epoia.cn',
+				fileUrl: 'https://www.epoia.cn/Video/',
 				autoplay: true,
 				like: false,
 				collect: false,

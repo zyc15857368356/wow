@@ -3,7 +3,8 @@
 		<div class="container1">
 			<div>
 				<div class="headImg">
-					<open-data type="userAvatarUrl"></open-data>
+					<img :src="avatarUrl" v-if="avatarUrl" style="width: 100%;height: 100%">
+					<open-data type="userAvatarUrl" v-else></open-data>
 				</div>
 				<div class="searchInpt">
 					<icon type="search" size="16"></icon>
@@ -47,10 +48,11 @@
 	export default {
 		data() {
 			return {
-				url: 'http://124.71.148.15:8004',
-				fileUrl: 'http://124.71.148.15:8004/Data',
-				imgUrl: 'http://124.71.148.15:8004/Image/',
-				videoUrl: 'http://124.71.148.15:8004/Data/Video/',
+				avatarUrl: '',
+				url: 'https://www.epoia.cn',
+				fileUrl: 'https://www.epoia.cn/Data',
+				imgUrl: 'https://www.epoia.cn/Image/',
+				videoUrl: 'https://www.epoia.cn/Data/Video/',
 				indicatorDots: true,
 				autoplay: true,
 				title: 'Hello',
@@ -113,6 +115,18 @@
 		},
 		onLoad() {
 			this.getList()
+		},
+		onShow() {
+			var _that = this
+			uni.getStorage({
+				key: 'avatarUrl',
+				success(res) {
+					_that.avatarUrl = res.data
+				}
+			})
+		},
+		created() {
+
 		},
 		methods: {
 			scroll() {

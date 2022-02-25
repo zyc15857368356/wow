@@ -7,11 +7,13 @@
 				<div class="img">
 					<img :src="imgUrl+item.Cover" alt="">
 				</div>
-				<div>
+				<div style="margin-left: 20px">
 					<p class="title">{{item.Titel}}</p>
+					<p style="margin-right: 30px;margin-top:10px" >{{item.Price}}元</p>
 					<div class="buy">
-						<p style="margin-right: 30px">{{item.Price}}</p>
-						<div style="padding: 5px 20px;color: #fff;background: #F0AD4E;border-radius: 20px;font-size: 32rpx">前往购买</div>
+						<div style="padding: 5px 20px;color: #fff;background: #F0AD4E;border-radius: 20px;font-size: 32rpx">
+							前往购买
+						</div>
 					</div>
 				</div>
 			</div>
@@ -24,9 +26,9 @@
 	export default {
 		data() {
 			return {
-				imgUrl: 'http://124.71.148.15:8004/Image/',
+				imgUrl: 'https://www.epoia.cn/Image/',
 				videoList: [],
-				url: 'http://124.71.148.15:8004',
+				url: 'https://www.epoia.cn',
 				videoType: 0,
 				page: {
 					page: 1,
@@ -126,7 +128,6 @@
 		background: #fff;
 		padding: 40rpx;
 		display: flex;
-		justify-content: space-between;
 	}
 	.item> .img{
 		width: 240rpx;
@@ -139,9 +140,9 @@
 		}
 	}
 	.title{
-		height: 180rpx
 	}
 	.buy{
 		display: flex;
+		margin-top: 20px
 	}
 </style>
