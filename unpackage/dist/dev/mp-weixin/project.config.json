@@ -1,33 +1,35 @@
 {
-  "description": "项目配置文件。",
-  "packOptions": {
-    "ignore": []
-  },
-  "setting": {
-    "urlCheck": false,
-    "es6": false,
-    "minified": true
-  },
-  "compileType": "miniprogram",
-  "libVersion": "",
-  "appid": "wx5e2fdbaa29ff0aab",
-  "projectname": "WowCreativeAdvertising",
-  "condition": {
-    "search": {
-      "current": -1,
-      "list": []
-    },
-    "conversation": {
-      "current": -1,
-      "list": []
-    },
-    "game": {
-      "current": -1,
-      "list": []
-    },
-    "miniprogram": {
-      "current": -1,
-      "list": []
-    }
-  }
+	"description": "项目配置文件。",
+	"packOptions": {
+		"ignore": []
+	},
+	"setting": {
+		"urlCheck": false,
+		"es6": false,
+		"minified": true
+	},
+	"compileType": "miniprogram",
+	"libVersion": "",
+	"appid": "wx5e2fdbaa29ff0aab",
+	"projectname": "WowCreativeAdvertising",
+	"simulatorType": "wechat",
+	"simulatorPluginLibVersion": {},
+	"condition": {
+		"search": {
+			"current": -1,
+			"list": []
+		},
+		"conversation": {
+			"current": -1,
+			"list": []
+		},
+		"game": {
+			"current": -1,
+			"list": []
+		},
+		"miniprogram": {
+			"current": -1,
+			"list": []
+		}
+	}
 }

@@ -1,18 +1,21 @@
 <template>
 	<view>
-		<scroll-view style="height: 100vh" :scroll-top="scrollTop" scroll-y="true" class="scroll-Y" @scrolltoupper="upper" @scrolltolower="lower"
+		<div class="tab">
+			<div v-for="(item, i) in typeList" :key="i" style="text-align: center;border-radius: 3px;" :class="{active: index===i}" @click="chose(i)">{{item.title}}</div>
+		</div>
+		<scroll-view style="height: 100vh;" :scroll-top="scrollTop" scroll-y="true" class="scroll-Y" @scrolltoupper="upper" @scrolltolower="lower"
 			@scroll="scroll">
 		<div class="container">
 			<div v-for="(item, i) in videoList" class="item" :key="i">
 				<div class="img">
 					<img :src="imgUrl+item.Cover" alt="">
 				</div>
-				<div style="margin-left: 20px">
+				<div style="margin-left: 20px;width: 60%">
 					<p class="title">{{item.Titel}}</p>
-					<p style="margin-right: 30px;margin-top:10px" >{{item.Price}}元</p>
+					<p style="margin-right: 30px;margin-top:5px" >{{item.Price}}元</p>
 					<div class="buy">
-						<div style="padding: 5px 20px;color: #fff;background: #F0AD4E;border-radius: 20px;font-size: 32rpx">
-							前往购买
+						<div style="padding: 5px 20px;color: #fff;background: #F0AD4E;border-radius: 20px;font-size: 32rpx" @click="copy(item)">
+							复制淘宝链接
 						</div>
 					</div>
 				</div>
@@ -26,6 +29,24 @@
 	export default {
 		data() {
 			return {
+				index: 0,
+				typeList: [
+					{
+						title: '科技',
+						select: true,
+						value: 0
+					},
+					{
+						title: '服饰',
+						select: false,
+						value: 1
+					},
+					{
+						title: '美食',
+						select: false,
+						value: 2
+					},
+				],
 				imgUrl: 'https://www.epoia.cn/Image/',
 				videoList: [],
 				url: 'https://www.epoia.cn',
@@ -42,6 +63,29 @@
 			this.getList()
 		},
 		methods:{
+			chose(e) {
+				this.page.page = 1
+				this.page.row = 20
+				this.index = e
+				this.videoType = e
+				this.getList()
+			},
+			copy(e){
+				uni.setClipboardData({
+					data: e.Link,
+					success() {
+						uni.showToast({
+							title: '复制成功'
+						})
+					},
+					fail() {
+						uni.showToast({
+							title: '复制失败，请重试',
+							icon: 'error'
+						})
+					}
+				})
+			},
 			scroll() {
 				
 			},
@@ -120,7 +164,8 @@
 
 <style lang="scss">
 	.container{
-		padding: 0 20rpx
+		padding: 0 20rpx;
+		margin-top: 50px
 	}
 	.item{
 		margin-top: 20rpx;
@@ -140,9 +185,35 @@
 		}
 	}
 	.title{
+		overflow: hidden;
+		text-overflow: ellipsis;
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+		height: 37px;
+		font-size: 14px
 	}
 	.buy{
 		display: flex;
-		margin-top: 20px
+		margin-top: 10px
+	}
+	.tab{
+		width: calc( 100% - 20px ) ;
+		background: #fff;
+		margin: 0 auto;
+		display: flex;
+		justify-content: space-between;
+		position: fixed;
+		z-index: 1000;
+		left: 50%;
+		transform: translateX(-50%);
+		&>div{
+			width: calc( 100% / 3 );
+			padding: 10px 0
+		}
+	}
+	.active{
+		background: #F0AD4E;
+		color: #fff
 	}
 </style>

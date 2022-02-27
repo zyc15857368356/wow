@@ -2,39 +2,38 @@
 	<view class="container">
 		<div class="container1">
 			<div>
-				<div class="headImg">
-					<img :src="avatarUrl" v-if="avatarUrl" style="width: 100%;height: 100%">
-					<open-data type="userAvatarUrl" v-else></open-data>
+				<div class="headImg" v-if="avatarUrl">
+					<img :src="avatarUrl"  style="width: 100%;height: 100%">
 				</div>
 				<div class="searchInpt">
 					<icon type="search" size="16"></icon>
 					<input type="text" class="input" v-model="search" placeholder="请输入关键字" confirm-type="search" @confirm="getList()">
 				</div>
 			</div>
-			<div class="box">
-				<div class="types">
-					<div v-for="(item, i) in typeList" :key="i">
+			<div class="box" style="padding: 0 10px;">
+				<div class="types" style="padding: 0 10px">
+					<div v-for="(item, i) in typeList" :key="i" @click="selectType(item)" style="padding: 0 10px">
 						<p class="typeTitle" :class="{selected: item.select}" @click="chose(i)">{{item.title}}</p>
 					</div>
 				</div>
 			</div>
 		</div>
-		<div style="margin-top: 130px">
+		<div style="margin-top: 100px">
 			<scroll-view style="height: calc( 100vh - 130px )" :scroll-top="scrollTop" scroll-y="true" class="scroll-Y" @scrolltoupper="upper" @scrolltolower="lower"
 				@scroll="scroll">
 				<div class="body">
 				<div style="border-radius: 5px;overflow: hidden;">
 					<swiper class="swiper" :indicator-dots="indicatorDots" :autoplay="autoplay" indicator-color="rgba(255, 255, 255, 0.5)" indicator-active-color="#fff">
-						<swiper-item v-for="(item, i) in swiperList" :key="i">
+						<swiper-item v-for="(item, i) in swiperList" :key="i" @click="watchVideo(item)">
 							<img :src="imgUrl+item.Cover" style="width: 100%">
-							<p class="swiperTitle">{{item.Titel}}</p>
+							<p class="swiperTitle" style="width: 76%">{{item.Titel}}</p>
 						</swiper-item>
 					</swiper>
 				</div>
 				<div class="videos">
 					<div class="item" v-for="(item, i) in videoList" :key="i" @click="watchVideo(item)">
 						<img :src="imgUrl+item.Cover" style="width: 100%;height: 100px;display: block;">
-						<p>{{item.Titel}}</p>
+						<p style="overflow: hidden;text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp: 2;-webkit-box-orient: vertical;">{{item.Titel}}</p>
 					</div>
 				</div>
 			</div>
@@ -65,48 +64,19 @@
 				search: '',
 				typeList: [
 					{
-						title: '直播',
-						select: true
-					},
-					{
-						title: '热门',
-						select: false
-					},
-					{
 						title: '科技',
-						select: false
+						select: true,
+						value: 0
 					},
 					{
-						title: '游戏',
-						select: false
+						title: '服饰',
+						select: false,
+						value: 1
 					},
 					{
-						title: '游戏',
-						select: false
-					},
-					{
-						title: '游戏',
-						select: false
-					},
-					{
-						title: '游戏',
-						select: false
-					},
-					{
-						title: '游戏',
-						select: false
-					},
-					{
-						title: '游戏',
-						select: false
-					},
-					{
-						title: '游戏',
-						select: false
-					},
-					{
-						title: '游戏',
-						select: false
+						title: '美食',
+						select: false,
+						value: 2
 					},
 				],
 				swiperList: [],
@@ -129,6 +99,13 @@
 
 		},
 		methods: {
+			selectType(e) {
+				this.page.page = 1
+				this.page.row = 20
+				this.search = ''
+				this.videoType = e.value
+				this.getList()
+			},
 			scroll() {
 				
 			},
@@ -230,7 +207,6 @@
 	.types{
 		display: flex;
 		overflow-x: scroll;
-		padding-bottom: 25px;
 		&>div{
 			.typeTitle{
 				width: 40px;
@@ -264,6 +240,9 @@
 	  height: 30px;
 	  padding-top: 10px;
 	  background-image: linear-gradient(to top, rgba(0, 0, 0, .3), rgba(0, 0, 0, 0));
+	  overflow:hidden;
+	  text-overflow:ellipsis;
+	  white-space:nowrap
 	}
 	.videos{
 		display:flex;
@@ -278,7 +257,7 @@
 		padding-bottom: 10px;
 		p{
 			font-size: 32rpx;
-			padding: 10px;
+			padding: 3px 10px;
 			line-height: 44rpx;
 		}
 		.tag{
@@ -289,7 +268,9 @@
 		}
 	}
 	.container1{
+		width: calc( 100% - 20px ) ;
 		position: fixed;
+
 	}
 	.container1>div{
 		display: flex;
@@ -297,6 +278,7 @@
 		align-items: center;
 		background: #fff;
 		border-radius: 5px;
+
 	}
 	.headImg{
 		width: 90rpx;

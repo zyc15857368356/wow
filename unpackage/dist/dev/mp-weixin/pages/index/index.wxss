@@ -33,7 +33,6 @@
 .types {
   display: flex;
   overflow-x: scroll;
-  padding-bottom: 25px;
 }
 .types > ._div .typeTitle {
   width: 40px;
@@ -65,6 +64,9 @@ wx-swiper .wx-swiper-dot {
   height: 30px;
   padding-top: 10px;
   background-image: linear-gradient(to top, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0));
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .videos {
   display: flex;
@@ -80,7 +82,7 @@ wx-swiper .wx-swiper-dot {
 }
 .videos > .item ._p {
   font-size: 32rpx;
-  padding: 10px;
+  padding: 3px 10px;
   line-height: 44rpx;
 }
 .videos > .item .tag {
@@ -90,6 +92,7 @@ wx-swiper .wx-swiper-dot {
   margin-top: 40rpx;
 }
 .container1 {
+  width: calc( 100% - 20px);
   position: fixed;
 }
 .container1 > ._div {

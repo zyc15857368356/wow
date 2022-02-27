@@ -5,15 +5,14 @@
 				<div style="width: 160rpx;">
 					<div class="headImg">
 						<img :src="avatarUrl" v-if="avatarUrl">
-						<open-data type="userAvatarUrl" v-else lang="zh_CN"></open-data>
 					</div>
 				<div style="display: flex;justify-content: center;">
 						<p v-if="nickname">{{nickname}}</p>
 						<open-data type="userNickName" v-else style="text-align: center;" lang="zh_CN"></open-data>
 				</div>
 				</div>
-				<div class="share" v-if="token">
-					分享
+				<div class="share" v-if="token" @click="share">
+					<button style="display: block;width: 100%;height: 100%;border:none;outline: none;background: rgb(96,203,65);color: #fff;font-size: 16px;line-height: 34px;" open-type="share">分享</button>
 				</div>
 				<div class="login" v-else @click="login">
 					登录
@@ -21,14 +20,19 @@
 			</div>
 			<div class="collect">
 				<div class="type">
-					<div @click="chose(1)" :class="{selected: type === 1}">喜欢</div>
-					<div @click="chose(2)" :class="{selected: type === 2}">关注</div>
+					<div @click="chose(0)" :class="{selected: type === 0}">喜欢</div>
+					<div @click="chose(1)" :class="{selected: type === 1}">关注</div>
 				</div>
 			</div>
-			<div class="list">
-				<div v-for="(item, i) in list" :key="i">
-					<img src="../../static/cover.png">
+			<div class="list" v-if="memberId">
+				<div v-for="(item, i) in list" :key="i" @click="watchVideo(item)" style="margin-bottom: 10px;position: relative;overflow: hidden;">
+					<img :src="imgUrl+item.Cover">
+					<p style="position: absolute;bottom: 0;width: 100%;height: 28px;background: rgba(3, 3, 3, 0.6);color:#fff;z-index:1000;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;padding: 0 5px;font-size: 14px">{{item.Titel}}</p>
 				</div>
+			</div>
+			<div v-else style="display: flex;justify-content: center;margin-top: 60px">
+				 <icon type="warn" color="#999" size="26"/>
+				<p style="margin-left: 20rpx;">请登录后查看</p>
 			</div>
 		</div>
 	</view>
@@ -38,24 +42,61 @@
 	export default {
 		data() {
 			return {
-				type: 1,
-				list: [
-					{
-						
-					},
-					{
-						
-					}
-				],
+				type: 0,
+				list: [],
 				token: null,
 				avatarUrl: '',
-				nickname: ''
+				nickname: '',
+				memberId: '',
+				url: 'https://www.epoia.cn',
+				imgUrl: 'https://www.epoia.cn/Image/'
 			};
 		},
 		created() {
 
 		},
 		methods: {
+			share(e){
+				uni.share({
+					provider: 'weixin',
+					type: 5,
+					title: 'wow小程序商城',
+					scene: 'WXSceneSession',
+					imageUrl: 'https://www.epoia.cn/Image/logo.png',
+					miniProgram: {
+						id: 'gh_4458a3a81f8e',
+						path:'/pages/index/index',
+						type: 2
+					},
+					summary: '分享',
+					success: function (res) {
+						console.log("success:" + JSON.stringify(res));
+					},
+					fail: function (err) {
+						console.log("fail:" + JSON.stringify(err));
+					}
+				})
+			},
+			watchVideo(e) {
+				uni.navigateTo({
+					url: '../view/view?path='+e.Path+'&id='+e.Id,
+					animationType: 'pop-in',
+					animationDuration: 200
+				})
+			},
+			getList() {
+				var _this = this
+				uni.request({
+					url: this.url + '/Home/GetMemberInfo',
+					data: {
+						memberId:this.memberId,
+						type: this.type
+					},
+					success(res) {
+						_this.list = res.data.Data
+					}
+				})
+			},
 			login() {
 				var _this = this
 				uni.showModal({
@@ -107,10 +148,12 @@
 												uni.setStorage({
 													key: 'memberId',
 													data:res3.data.Data.memberId,
-													success() {
-														
+													success(res) {
+														_this.memberId = res3.data.Data.memberId
+														_this.getList()
 													}
 												})
+												
 											},
 											fail(res3) {
 												uni.showModal({
@@ -137,7 +180,15 @@
 				});
 			},
 			chose(e) {
-				this.type = e
+				if(!this.memberId) {
+					uni.showToast({
+						title: '请登录',
+						icon: "none"
+					})
+				} else{
+					this.type = e
+					this.getList()
+				}
 			}
 		}
 	}
@@ -152,6 +203,7 @@
 		height: 160rpx;
 		border-radius: 20rpx;
 		overflow: hidden;
+		border: 1px solid #ccc;
 		img{
 			width: 100%;
 			height: 100%;
@@ -172,7 +224,8 @@
 		text-align: center;
 		background: rgb(96,203,65);
 		border-radius: 60px;
-		color: #fff
+		color: #fff;
+		overflow: hidden;
 	}
 	.login{
 		width: 400rpx;

@@ -26,6 +26,7 @@
 /* 文章场景相关 */
 .container {
   padding: 0 20rpx;
+  margin-top: 50px;
 }
 .item {
   margin-top: 20rpx;
@@ -44,8 +45,37 @@
   width: 100%;
   height: 100%;
 }
+.title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  height: 37px;
+  font-size: 14px;
+}
 .buy {
   display: flex;
-  margin-top: 20px;
+  margin-top: 10px;
+}
+.tab {
+  width: calc( 100% - 20px);
+  background: #fff;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  position: fixed;
+  z-index: 1000;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
+}
+.tab > ._div {
+  width: calc( 100% / 3);
+  padding: 10px 0;
+}
+.active {
+  background: #F0AD4E;
+  color: #fff;
 }
 

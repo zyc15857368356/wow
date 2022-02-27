@@ -32,6 +32,7 @@
   height: 160rpx;
   border-radius: 20rpx;
   overflow: hidden;
+  border: 1px solid #ccc;
 }
 .headImg ._img {
   width: 100%;
@@ -53,6 +54,7 @@
   background: #60cb41;
   border-radius: 60px;
   color: #fff;
+  overflow: hidden;
 }
 .login {
   width: 400rpx;
