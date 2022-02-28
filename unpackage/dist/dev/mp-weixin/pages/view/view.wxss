@@ -36,9 +36,9 @@ page {
   width: 100%;
   position: absolute;
   left: 0;
-  top: 50%;
   -webkit-transform: translateY(-50%);
           transform: translateY(-50%);
+  transition: top 0.3s;
 }
 .handle {
   position: absolute;
@@ -53,5 +53,23 @@ page {
   display: block;
   width: 60rpx;
   height: 60rpx;
+}
+.videoTop {
+  top: -300px;
+  width: 100%;
+  position: absolute;
+  left: 0;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+  transition: top 0.3s;
+}
+.videoBottom {
+  top: 900px;
+  width: 100%;
+  position: absolute;
+  left: 0;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+  transition: top 0.3s;
 }
 

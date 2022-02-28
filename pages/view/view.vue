@@ -1,8 +1,14 @@
 <template>
-	<view class="container">
-		<div class="video">
+	<view class="container"  @touchmove.catch="handletouchmove" @touchstart="handletouchstart" @touchend="handletouchend">
+<!-- 		<div class="videoTop">
+			<video :src="fileUrl+video.Path" style="width: 100%" autoplay controls show-play-btn auto-pause-if-navigate></video>
+		</div> -->
+		<div class="video" :style="{top: domY ? domY + 'px': '50%'}">
 			<video :src="fileUrl+video.Path" style="width: 100%" autoplay controls show-play-btn auto-pause-if-navigate></video>
 		</div>
+<!-- 		<div class="videoBottom">
+			<video :src="fileUrl+video.Path" style="width: 100%" autoplay controls show-play-btn auto-pause-if-navigate></video>
+		</div> -->
 		<div class="handle">
 			<div @click="addLike">
 				<img :src="like? '../../static/heartSelected.png' : '../../static/heart.png'">
@@ -13,7 +19,7 @@
 				<p>收藏</p>
 			</div>
 			<div @click="addBuy">
-				<img :src="car? '../../static/carSelect.png':'../../static/car.png'">
+				<img :src="shopping? '../../static/carSelect.png':'../../static/car.png'">
 				<p>买它</p>
 			</div>
 		</div>
@@ -29,19 +35,24 @@
 				autoplay: true,
 				like: false,
 				collect: false,
-				car: false,
+				shopping: false,
 				path: '',
 				id: null,
 				token: null,
 				memberId: null,
-				video: {}
+				video: {},
+				startX: 0,
+				startY: 0,
+				next: {},
+				prev: {},
+				domY: null,
+				domStartY: null,
 			}
 		},
 		onLoad(option) {
 			this.path = option.path
 			this.id = option.id
 		},
-		
 		onShow() {
 			var that = this
 			uni.getStorage({
@@ -59,6 +70,68 @@
 			this.getVideoInfo()
 		},
 		methods: {
+			debounce(fn,wait){
+				var timer = null;
+				return () => {
+					if(timer !== null){
+						clearTimeout(timer);
+					}
+					timer = setTimeout(fn,wait);
+				}
+			},
+			handletouchend(e) {
+				console.log(this.domY)
+				if (this.domY < 20) {
+					console.log(12313)
+					this.domY = -200
+					
+					return
+				}
+				if (this.domY > 520) {
+					console.log(45646)
+					this.domY = 700
+					return
+				}
+				if (this.domY > 80 || this.domY < 420) {
+					console.log(78979)
+					this.domY = this.domStartY
+					return
+				}
+			},
+			handletouchstart(e) {
+				e.preventDefault();
+				this.startX = e.touches[0].pageX;
+				this.startY = e.touches[0].pageY;
+				let video = uni.createSelectorQuery().in(this).select("#video")
+				setTimeout(() => {
+					video.boundingClientRect(data => {
+						this.domY = data.top + (data.height / 2)
+						this.domStartY = data.top + (data.height / 2)
+					}).exec()
+				}, 100)
+			},
+			handletouchmove(e) {
+				// e.preventDefault();
+				this.domY = this.domStartY
+				let video = uni.createSelectorQuery().in(this).select("#video")
+				let moveEndX = e.changedTouches[0].pageX;
+				let moveEndY = e.changedTouches[0].pageY;
+				let X = moveEndX - this.startX;
+				let Y = moveEndY - this.startY;
+				if ( Math.abs(Y) > Math.abs(X) && Y > 0) {
+					// console.log("down")
+					this.domY += Y
+					// console.log(this.domY)
+				} else if ( Math.abs(Y) > Math.abs(X) && Y < 0 ) {
+					// console.log("up");
+					this.domY += Y
+					// console.log(this.domY)
+				}
+				// console.log(this.domY)
+			},
+			handle(X, Y) {
+
+			},
 			getVideoInfo() {
 				new Promise((resolve, reject) => {
 					let mId = ''
@@ -85,10 +158,12 @@
 							memberId: response
 						},
 						success(res) {
-							_this.video = res.data.Data.model[0]
+							_this.video = res.data.Data.model
 							_this.like = res.data.Data.thumbs
 							_this.collect = res.data.Data.collections
-							console.log(_this.video)
+							_this.shopping = res.data.Data.shopping
+							_this.next = res.data.Data.nextmodel
+							_this.prev = res.data.Data.prevmodel
 						}
 					})
 				})
@@ -166,11 +241,11 @@
 						data: {
 							MemberId: this.memberId,
 							VideoId: this.id,
-							Type: 2
+							Type: 3
 						},
 						success(res) {
 							if (res.data.Success) {
-								_this.car = !_this.car
+								_this.shopping = !_this.shopping
 							} else {
 								uni.showToast({
 									title:res.data.Message,
@@ -199,8 +274,8 @@
 		width: 100%;
 		position: absolute;
 		left: 0;
-		top: 50%;
 		transform: translateY(-50%);
+		transition: top 0.3s;
 	}
 	.handle{
 		position: absolute;
@@ -217,5 +292,21 @@
 				height: 60rpx;
 			}
 		}
+	}
+	.videoTop{
+		top: -300px;
+		width: 100%;
+		position: absolute;
+		left: 0;
+		transform: translateY(-50%);
+		transition: top 0.3s;
+	}
+	.videoBottom{
+		top: 900px;
+		width: 100%;
+		position: absolute;
+		left: 0;
+		transform: translateY(-50%);
+		transition: top 0.3s;
 	}
 </style>

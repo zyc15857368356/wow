@@ -26,7 +26,6 @@
 /* 文章场景相关 */
 .container {
   padding: 0 20rpx;
-  margin-top: 50px;
 }
 .item {
   margin-top: 20rpx;

@@ -8635,9 +8635,9 @@ function resolveLocaleChain(locale) {
 
 /***/ }),
 /* 5 */
-/*!***************************************!*\
-  !*** G:/project/新建文件夹/wow/pages.json ***!
-  \***************************************/
+/*!*****************************!*\
+  !*** D:/zyc/wow/pages.json ***!
+  \*****************************/
 /*! no static exports found */
 /***/ (function(module, exports) {
 

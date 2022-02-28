@@ -1,10 +1,8 @@
 <template>
 	<view>
-		<div class="tab">
+<!-- 		<div class="tab">
 			<div v-for="(item, i) in typeList" :key="i" style="text-align: center;border-radius: 3px;" :class="{active: index===i}" @click="chose(i)">{{item.title}}</div>
-		</div>
-		<scroll-view style="height: 100vh;" :scroll-top="scrollTop" scroll-y="true" class="scroll-Y" @scrolltoupper="upper" @scrolltolower="lower"
-			@scroll="scroll">
+		</div> -->
 		<div class="container">
 			<div v-for="(item, i) in videoList" class="item" :key="i">
 				<div class="img">
@@ -21,7 +19,6 @@
 				</div>
 			</div>
 		</div>
-		</scroll-view>
 	</view>
 </template>
 
@@ -56,11 +53,31 @@
 					row: 20,
 					total: 0
 				},
-				search: ''
+				search: '',
+				memberId: ''
 			};
 		},
 		onLoad() {
-			this.getList()
+			
+		},
+		onShow() {
+			var _this = this
+			uni.getStorage({
+				key: 'memberId',
+				success(res) {
+					console.log(12313)
+					_this.memberId = res.data
+					_this.getList()
+				},
+				fail() {
+					console.log(45646456)
+					uni.showToast({
+						title: "请登录后查看",
+						icon: "none"
+					})
+				}
+			})
+
 		},
 		methods:{
 			chose(e) {
@@ -128,19 +145,17 @@
 			},
 			getList() {
 				let data = {
-					pageIndex: this.page.page,
-					pageSize: this.page.row,
+					memberId: this.memberId,
 					search: this.search,
-					videoType: this.videoType
 				}
 				var _this = this
 				uni.request({
-					url: this.url + '/Home/GetVideoList',
+					url: this.url + '/Home/GetShopping',
 					method: 'GET',
 					data: data,
 					success(res) {
 						if(res.data.Success) {
-							_this.videoList = res.data.Data.list
+							_this.videoList = res.data.Data
 						} else {
 							uni.showToast({
 								title: res.data.Message,
@@ -165,7 +180,6 @@
 <style lang="scss">
 	.container{
 		padding: 0 20rpx;
-		margin-top: 50px
 	}
 	.item{
 		margin-top: 20rpx;
