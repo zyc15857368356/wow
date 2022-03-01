@@ -233,6 +233,22 @@ var _default =
   },
   mounted: function mounted() {},
   methods: {
+    getBehavior: function getBehavior() {
+      var _this = this;
+      uni.request({
+        url: this.url + '/Home/GetVideoInfo',
+        methods: 'GET',
+        data: {
+          id: this.PayVideo[this.index_].Id,
+          memberId: _this.memberId },
+
+        success: function success(res) {
+          _this.like = res.data.Data.thumbs;
+          _this.collect = res.data.Data.collections;
+          _this.shopping = res.data.Data.shopping;
+        } });
+
+    },
     changefun: function changefun(e) {
       this.is_active = false;
       var current = e.detail.current;var
@@ -244,7 +260,6 @@ var _default =
 
 
       this.len,PayVideo = this.PayVideo,active = this.active,_arr = this._arr,t = this.t,index_ = this.index_;
-      console.log(1231313, index_);
       var videoContext = uni.createVideoContext('id' + index_);
       videoContext.pause();
       this.PayVideo = PayVideo;
@@ -269,6 +284,8 @@ var _default =
       videoContext.seek(0);
       videoContext.play();
       this.index_ = current;
+      this.getBehavior();
+      console.log(this.index_);
       if (PayVideo.length == len) {
         return;
       }
@@ -298,7 +315,7 @@ var _default =
           methods: 'GET',
           data: {
             id: _this2.id,
-            memberId: response },
+            memberId: _this.memberId },
 
           success: function success(res) {
             _this.prev = res.data.Data.prevmodel;

@@ -101,6 +101,22 @@
 		},
 		mounted() {},
 		methods: {
+			getBehavior() {
+				var _this = this
+				uni.request({
+					url: this.url + '/Home/GetVideoInfo',
+					methods: 'GET',
+					data: {
+						id: this.PayVideo[this.index_].Id,
+						memberId: _this.memberId
+					},
+					success(res) {
+						_this.like = res.data.Data.thumbs
+						_this.collect = res.data.Data.collections
+						_this.shopping = res.data.Data.shopping
+					}
+				})
+			},
 			changefun(e) {
 				this.is_active = false
 				let current = e.detail.current
@@ -112,7 +128,6 @@
 					t,
 					index_
 				} = this
-				console.log(1231313, index_)
 				let videoContext = uni.createVideoContext('id' + index_)
 				videoContext.pause()
 				this.PayVideo = PayVideo
@@ -131,12 +146,14 @@
 				this.is_active = true
 				PayVideo[current]['istrue'] = true
 				this.PayVideo = PayVideo
-				let videoContext = uni.createVideoContext('id' + (index_-1))
+				let videoContext = uni.createVideoContext('id' + (index_ - 1))
 				videoContext.pause()
 				videoContext = uni.createVideoContext('id' + current)
 				videoContext.seek(0)
 				videoContext.play()
 				this.index_ = current
+				this.getBehavior()
+				console.log(this.index_)
 				if (PayVideo.length == len) {
 					return
 				}
@@ -166,7 +183,7 @@
 						methods: 'GET',
 						data: {
 							id: this.id,
-							memberId: response
+							memberId: _this.memberId
 						},
 						success(res) {
 							_this.prev = res.data.Data.prevmodel
