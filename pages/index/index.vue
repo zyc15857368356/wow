@@ -8,6 +8,7 @@
 				<div class="searchInpt">
 					<icon type="search" size="16"></icon>
 					<input type="text" class="input" v-model="search" placeholder="请输入关键字" confirm-type="search" @confirm="getList()">
+					<icon type="cancel" size="16" color="#333" style="transform: translateX(-10px);z-index: 1000;" v-if="search" @click="reset"></icon>
 				</div>
 			</div>
 			<div class="box" style="padding: 0 10px;">
@@ -99,6 +100,9 @@
 
 		},
 		methods: {
+			reset() {
+				this.search = ''
+			},
 			selectType(e) {
 				this.page.page = 1
 				this.page.row = 20

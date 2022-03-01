@@ -1,19 +1,17 @@
 <template>
 	<view class="container uni-padding-wrap">
 		<div class="page-section swiper">
-			<swiper class="swiper" @change="changefun" @animationfinish="animationfinishfun" :current="playIndex"
-				:vertical="true">
-				<swiper-item v-for="(item,index) in PayVideo">
+			<swiper class="swiper" @change="changefun" @animationfinish="animationfinishfun" :current="0"
+				:vertical="true" :circular="true">
+				<swiper-item v-for="(item, i) in PayVideo" :key="i" :id="'id' + i">
 					<view class="swiper-item">
-						<video :custom-cache="false" v-if="index === 1" loop="true" class="video" :id="'id'+index"
-							:enable-play-gesture="true" :autoplay="true" :src="fileUrl + item.Path">
+						<video :custom-cache="false" loop="true" class="video" :id="'id'+i" :enable-play-gesture="true"
+							:enable-progress-gesture="true" :controls="false" :src="fileUrl+ item.Path"
+							:show-center-play-btn="false">
+
 						</video>
-						<div class="cover">
-							<img :src="imgUrl+ item.Cover">
-						</div>
 					</view>
 				</swiper-item>
-
 			</swiper>
 		</div>
 		<!-- 		<div class="video" id="video" :style="{top: domY ? domY + 'px': '50%'}">
@@ -41,16 +39,8 @@
 	export default {
 		data() {
 			return {
-				playIndex: 1,
+				playIndex: 0,
 				imgUrl: 'https://www.epoia.cn/Image/',
-				index_: 1,
-				index: '1',
-				is_active: true,
-				active: 2,
-				PayVideo: [],
-				current_i: 2,
-				_arr: [],
-				len: 0,
 				url: 'https://www.epoia.cn',
 				fileUrl: 'https://www.epoia.cn/Video/',
 				autoplay: true,
@@ -67,8 +57,27 @@
 				next: {},
 				prev: {},
 				domY: null,
+				active: 2,
 				domStartY: null,
+				startData: {
+					clientX: '',
+					clientY: ''
+				},
+				model: {},
+				index_: 1,
+				index: '1',
+				is_active: true,
+				PayVideo: [],
+				current_i: 2,
+				_arr: [],
+				len: 0,
 			}
+		},
+		props: {
+			ind: {
+				type: Number,
+				default: 0
+			},
 		},
 		onLoad(option) {
 			this.path = option.path
@@ -90,105 +99,9 @@
 			})
 			this.getVideoInfo()
 		},
-		mounted() {
-			// let ind = 1
-			// this.index = ind
-			// const video = uni.getStorageSync('video');
-			// const len = video.length
-			// let b_arr = []
-			// let s_arr = []
-			// video.forEach((res, index) => {
-			// 	if (ind <= index) {
-			// 		b_arr.push(res)
-			// 	} else {
-			// 		s_arr.push(res)
-			// 	}
-			// })
-			// let _arr = b_arr.concat(s_arr.reverse())
-			// _arr = _arr.map(res => {
-			// 	res['istrue'] = false
-			// 	return res
-			// })
-			// _arr[0]['istrue'] = true
-			// const PayVideo = [
-			// 	_arr[len - 1], _arr[0], _arr[1]
-			// ]
-			// this.PayVideo = PayVideo
-			// this._arr = _arr
-			// this.len = len
-
-			for (let i = 0; i < this.PayVideo.length; i++) {
-				this.PayVideo[i].istrue = false
-			}
-			this.$nextTick(function() {
-				let videoContext = uni.createVideoContext('id1')
-				videoContext.play()
-			})
-		},
+		mounted() {},
 		methods: {
-			animationfinishfun(e) {
-				let {
-					index_,
-					len,
-					PayVideo,
-					active,
-					_arr,
-					t
-				} = this
-				let current = e.detail.current
-				this.is_active = true
-				PayVideo[current]['istrue'] = true
-				this.PayVideo = PayVideo
-				let videoContext = uni.createVideoContext('id' + index_)
-				videoContext.pause()
-				videoContext = uni.createVideoContext('id' + current)
-				videoContext.play()
-				this.index_ = current
-				if (PayVideo.length == len) {
-					return
-				}
-				this.PayVideo.push(_arr[active])
-				this.active += 1
-			},
 			changefun(e) {
-				new Promise((resolve, reject) => {
-					let mId = ''
-					uni.getStorage({
-						key: "memberId",
-						success(res) {
-							mId = res.data
-							resolve(mId)
-						},
-						fail() {
-							uni.showToast({
-								title: "请登录",
-								icon: "none"
-							})
-						}
-					})
-				}).then(response => {
-					var _this = this
-					uni.request({
-						url: this.url + '/Home/GetVideoInfo',
-						methods: 'GET',
-						data: {
-							id: this.id,
-							memberId: response
-						},
-						success(res) {
-							_this.PayVideo = []
-							_this.PayVideo.push(res.data.Data.prevmodel)
-							_this.PayVideo.push(res.data.Data.model)
-							_this.PayVideo.push(res.data.Data.nextmodel)
-							// _this.video = res.data.Data.model 
-							_this.like = res.data.Data.thumbs
-							_this.collect = res.data.Data.collections
-							_this.shopping = res.data.Data.shopping
-							// _this.next = res.data.Data.nextmodel
-							// _this.prev = res.data.Data.prevmodel
-						}
-					})
-				})
 				this.is_active = false
 				let current = e.detail.current
 				let {
@@ -199,10 +112,36 @@
 					t,
 					index_
 				} = this
-				console.log(PayVideo, index_)
+				console.log(1231313, index_)
 				let videoContext = uni.createVideoContext('id' + index_)
 				videoContext.pause()
 				this.PayVideo = PayVideo
+			},
+			animationfinishfun(e) {
+				let {
+					index_,
+					len,
+					PayVideo,
+					active,
+					t
+				} = this
+				let _arr = this._arr
+				console.log(_arr)
+				let current = e.detail.current
+				this.is_active = true
+				PayVideo[current]['istrue'] = true
+				this.PayVideo = PayVideo
+				let videoContext = uni.createVideoContext('id' + (index_-1))
+				videoContext.pause()
+				videoContext = uni.createVideoContext('id' + current)
+				videoContext.seek(0)
+				videoContext.play()
+				this.index_ = current
+				if (PayVideo.length == len) {
+					return
+				}
+				this.PayVideo.push(_arr[active])
+				this.active += 1
 			},
 			getVideoInfo() {
 				new Promise((resolve, reject) => {
@@ -230,16 +169,45 @@
 							memberId: response
 						},
 						success(res) {
-							_this.PayVideo = []
-							_this.PayVideo.push(res.data.Data.prevmodel)
-							_this.PayVideo.push(res.data.Data.model)
-							_this.PayVideo.push(res.data.Data.nextmodel)
-							// _this.video = res.data.Data.model 
+							_this.prev = res.data.Data.prevmodel
+							_this.next = res.data.Data.nextmodel
+							_this.model = res.data.Data.model
 							_this.like = res.data.Data.thumbs
+							_this.PayVideo = res.data.Data.data
 							_this.collect = res.data.Data.collections
 							_this.shopping = res.data.Data.shopping
-							// _this.next = res.data.Data.nextmodel
-							// _this.prev = res.data.Data.prevmodel
+							let ind = 1
+							_this.index = ind
+							const video = _this.PayVideo
+							const len = video.length
+							let b_arr = []
+							let s_arr = []
+							video.forEach((res, index) => {
+								if (ind <= index) {
+									b_arr.push(res)
+								} else {
+									s_arr.push(res)
+								}
+							})
+
+							let _arr = b_arr.concat(s_arr.reverse())
+							_arr = _arr.map(res => {
+								res['istrue'] = false
+								return res
+							})
+							_arr[0]['istrue'] = true
+							const PayVideo = [
+								_arr[len - 1], _arr[0], _arr[1]
+							]
+							_this.PayVideo = PayVideo
+							console.log(_this.PayVideo)
+							_this._arr = _arr
+							_this.len = len
+							_this.$nextTick(function() {
+								let videoContext = uni.createVideoContext('id0')
+								console.log(7489789, videoContext)
+								videoContext.play()
+							})
 						}
 					})
 				})
@@ -402,14 +370,16 @@
 		height: 100%;
 		background: rgba(0, 0, 0, .8);
 	}
-	.cover{
+
+	.cover {
 		width: 100%;
 		height: 225px;
 		position: absolute;
 		left: 0;
 		top: 50%;
 		transform: translateY(-50%);
-		&>img{
+
+		&>img {
 			width: 100%;
 			display: block;
 			height: 100%
