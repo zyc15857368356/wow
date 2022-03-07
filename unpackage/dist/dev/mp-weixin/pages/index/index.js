@@ -240,6 +240,7 @@ var _default =
   methods: {
     reset: function reset() {
       this.search = '';
+      this.getList();
     },
     selectType: function selectType(e) {
       this.page.page = 1;
@@ -304,7 +305,6 @@ var _default =
           if (res.data.Success) {
             _this.videoList = res.data.Data.list;
             _this.swiperList = res.data.Data.recomd;
-            _this.search = '';
           } else {
             uni.showToast({
               title: res.data.Message,

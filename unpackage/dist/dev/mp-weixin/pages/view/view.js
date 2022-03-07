@@ -202,7 +202,8 @@ var _default =
       PayVideo: [],
       current_i: 2,
       _arr: [],
-      len: 0 };
+      len: 0,
+      isLandScape: false };
 
   },
   props: {
@@ -211,9 +212,31 @@ var _default =
       default: 0 } },
 
 
+  onResize: function onResize() {
+    var _this = this;
+    uni.getSystemInfo({
+      success: function success(res) {
+        if (res.windowWidth > res.windowHeight) {
+          // 横屏
+          _this.isLandScape = true;
+        } else {
+          // 竖屏
+          _this.isLandScape = false;
+        }
+      } });
+
+  },
   onLoad: function onLoad(option) {
     this.path = option.path;
     this.id = option.id;
+    //
+    // plus.screen.lockOrientation('default');
+    //
+  },
+  onUnload: function onUnload() {
+    //
+    // plus.screen.lockOrientation('portrait-primary');
+    //
   },
   onShow: function onShow() {
     var that = this;
@@ -231,7 +254,21 @@ var _default =
 
     this.getVideoInfo();
   },
-  mounted: function mounted() {},
+  mounted: function mounted() {
+    // uni.onWindowResize( res => {
+    // 	console.log(res.deviceOrientation)
+    // })
+    //
+    // let orit = plus.navigator.getOrientation();
+    // if ((orit == 0) || (orit == 180)) {
+    // 	//竖屏做的操作
+    // 	console.log(111)
+    // } else {
+    // 	//横屏做的操作
+    // 	console.log(2222)
+    // }
+    //
+  },
   methods: {
     getBehavior: function getBehavior() {
       var _this = this;
@@ -273,7 +310,6 @@ var _default =
 
       this.index_,len = this.len,PayVideo = this.PayVideo,active = this.active,t = this.t;
       var _arr = this._arr;
-      console.log(_arr);
       var current = e.detail.current;
       this.is_active = true;
       PayVideo[current]['istrue'] = true;
@@ -285,7 +321,6 @@ var _default =
       videoContext.play();
       this.index_ = current;
       this.getBehavior();
-      console.log(this.index_);
       if (PayVideo.length == len) {
         return;
       }
@@ -349,12 +384,10 @@ var _default =
             _arr[len - 1], _arr[0], _arr[1]];
 
             _this.PayVideo = PayVideo;
-            console.log(_this.PayVideo);
             _this._arr = _arr;
             _this.len = len;
             _this.$nextTick(function () {
               var videoContext = uni.createVideoContext('id0');
-              console.log(7489789, videoContext);
               videoContext.play();
             });
           } });
@@ -392,7 +425,6 @@ var _default =
     },
     addCollect: function addCollect() {
       var _this = this;
-      console.log(this.memberId);
       if (!this.memberId) {
         uni.showToast({
           title: '请先完成登录后再试',

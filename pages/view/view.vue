@@ -2,10 +2,10 @@
 	<view class="container uni-padding-wrap">
 		<div class="page-section swiper">
 			<swiper class="swiper" @change="changefun" @animationfinish="animationfinishfun" :current="0"
-				:vertical="true" :circular="true">
+				:vertical="true" :circular="true" :disable-touch="isLandScape">
 				<swiper-item v-for="(item, i) in PayVideo" :key="i" :id="'id' + i">
 					<view class="swiper-item">
-						<video :custom-cache="false" loop="true" class="video" :id="'id'+i" :enable-play-gesture="true"
+						<video :custom-cache="false" loop="true" :class="{vdieoHen: isLandScape}" class="video" :id="'id'+i" :enable-play-gesture="true"
 							:enable-progress-gesture="true" :controls="false" :src="fileUrl+ item.Path"
 							:show-center-play-btn="false">
 
@@ -18,7 +18,7 @@
 			<video :src="fileUrl+video.Path" style="width: 100%" autoplay controls show-play-btn
 				auto-pause-if-navigate></video>
 		</div> -->
-		<div class="handle">
+		<div class="handle" v-if="!isLandScape">
 			<div @click="addLike">
 				<img :src="like? '../../static/heartSelected.png' : '../../static/heart.png'">
 				<p>喜欢</p>
@@ -71,6 +71,7 @@
 				current_i: 2,
 				_arr: [],
 				len: 0,
+				isLandScape: false
 			}
 		},
 		props: {
@@ -79,9 +80,31 @@
 				default: 0
 			},
 		},
+		onResize() {
+			let _this = this
+			uni.getSystemInfo({
+				success: function(res) {
+					if (res.windowWidth > res.windowHeight) {
+						// 横屏
+						_this.isLandScape = true
+					} else {
+						// 竖屏
+						_this.isLandScape = false
+					}
+				}
+			})
+		},
 		onLoad(option) {
 			this.path = option.path
 			this.id = option.id
+			// // #ifdef MP-WEIXIN
+			// plus.screen.lockOrientation('default');
+			// // #endif
+		},
+		onUnload() {
+			// // #ifdef MP-WEIXIN
+			// plus.screen.lockOrientation('portrait-primary');
+			// // #endif
 		},
 		onShow() {
 			var that = this
@@ -99,7 +122,21 @@
 			})
 			this.getVideoInfo()
 		},
-		mounted() {},
+		mounted() {
+			// uni.onWindowResize( res => {
+			// 	console.log(res.deviceOrientation)
+			// })
+			// //#ifdef MP-WEIXIN
+			// let orit = plus.navigator.getOrientation();
+			// if ((orit == 0) || (orit == 180)) {
+			// 	//竖屏做的操作
+			// 	console.log(111)
+			// } else {
+			// 	//横屏做的操作
+			// 	console.log(2222)
+			// }
+			// //#endif
+		},
 		methods: {
 			getBehavior() {
 				var _this = this
@@ -141,7 +178,6 @@
 					t
 				} = this
 				let _arr = this._arr
-				console.log(_arr)
 				let current = e.detail.current
 				this.is_active = true
 				PayVideo[current]['istrue'] = true
@@ -153,7 +189,6 @@
 				videoContext.play()
 				this.index_ = current
 				this.getBehavior()
-				console.log(this.index_)
 				if (PayVideo.length == len) {
 					return
 				}
@@ -217,12 +252,10 @@
 								_arr[len - 1], _arr[0], _arr[1]
 							]
 							_this.PayVideo = PayVideo
-							console.log(_this.PayVideo)
 							_this._arr = _arr
 							_this.len = len
 							_this.$nextTick(function() {
 								let videoContext = uni.createVideoContext('id0')
-								console.log(7489789, videoContext)
 								videoContext.play()
 							})
 						}
@@ -260,7 +293,6 @@
 			},
 			addCollect() {
 				var _this = this
-				console.log(this.memberId)
 				if (!this.memberId) {
 					uni.showToast({
 						title: '请先完成登录后再试',
@@ -343,8 +375,11 @@
 		left: 0;
 		top: 50%;
 		transform: translateY(-50%);
-	}
 
+	}
+	.vdieoHen{
+		height: 100%;
+	}
 	.handle {
 		position: absolute;
 		bottom: 21px;
@@ -383,6 +418,7 @@
 	}
 
 	.swiper-item {
+		width: 100%;
 		position: relative;
 		height: 100%;
 		background: rgba(0, 0, 0, .8);
