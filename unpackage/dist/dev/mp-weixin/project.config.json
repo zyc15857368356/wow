@@ -4,13 +4,13 @@
     "ignore": []
   },
   "setting": {
-    "urlCheck": false,
+    "urlCheck": true,
     "es6": false,
     "minified": true
   },
   "compileType": "miniprogram",
   "libVersion": "",
-  "appid": "wx5e2fdbaa29ff0aab",
+  "appid": "wxf5a6339661729c61",
   "projectname": "WowCreativeAdvertising",
   "condition": {
     "search": {

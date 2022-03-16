@@ -89,17 +89,102 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var _default =
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
+var userInfo = {};
+function login() {
+  uni.showModal({
+    title: '温馨提示',
+    content: '是否确认登录',
+    success: function success(res1) {
+      if (res1.confirm) {
+        uni.getUserProfile({
+          desc: 'Wexin',
+          success: function success(res2) {
+            //console.log(res);
+            userInfo = res2.userInfo;
+            uni.login({
+              provider: 'weixin',
+              success: function success(loginRes) {
+                var data = {
+                  code: loginRes.code,
+                  nickname: userInfo.nickName,
+                  avatarUrl: userInfo.avatarUrl };
+
+                uni.request({
+                  url: 'https://www.epoia.cn/Auth/WeiXinLogin',
+                  method: 'POST',
+                  data: data,
+                  success: function success(res3) {
+                    uni.setStorage({
+                      key: 'token',
+                      data: res3.data.Data.wxKey,
+                      success: function success() {
+                        // _this.token = res3.data.Data.wxKey
+                        // _this.avatarUrl = res3.data.Data.avatarUrl
+                        // _this.nickname = res3.data.Data.nickname
+                        uni.setStorage({
+                          key: 'avatarUrl',
+                          data: res3.data.Data.avatarUrl,
+                          success: function success() {
+
+                          } });
+
+                        uni.setStorage({
+                          key: 'nickname',
+                          data: res3.data.Data.nickname,
+                          success: function success() {
+
+                          } });
+
+                      } });
+
+                    uni.setStorage({
+                      key: 'memberId',
+                      data: res3.data.Data.memberId,
+                      success: function success(res) {
+                        // _this.memberId = res3.data.Data.memberId
+                        // _this.getList()
+                      } });
+
+
+                  },
+                  fail: function fail(res3) {
+                    uni.showModal({
+                      showCancel: false,
+                      title: res3.data.Message,
+                      confirmText: '关 闭',
+                      success: function success(res4) {
+
+                      } });
+
+                  } });
+
+              } });
+
+          },
+          fail: function fail(res2) {
+            console.log(res2);
+          } });
+
+      } else if (res1.cancel) {
+        console.log('用户点击取消');
+      }
+    } });
+
+}var _default =
 {
   onLaunch: function onLaunch() {
-
+    if (!uni.getStorageSync('token')) {
+      login();
+    }
   },
   onShow: function onShow() {
-    console.log('App Show');
+
   },
   onHide: function onHide() {
     console.log('App Hide');
   } };exports.default = _default;
+/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./node_modules/@dcloudio/uni-mp-weixin/dist/index.js */ 1)["default"]))
 
 /***/ }),
 /* 9 */

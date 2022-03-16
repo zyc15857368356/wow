@@ -21,7 +21,7 @@
 			<div class="collect">
 				<div class="type">
 					<div @click="chose(0)" :class="{selected: type === 0}">喜欢</div>
-					<div @click="chose(1)" :class="{selected: type === 1}">关注</div>
+					<div @click="chose(1)" :class="{selected: type === 1}">收藏</div>
 				</div>
 			</div>
 			<div class="list" v-if="memberId">
@@ -53,7 +53,20 @@
 			};
 		},
 		created() {
-
+			var _this = this
+			uni.getStorage({
+				key: "token",
+				success(res) {
+					if (res.data) {
+						_this.token = res.data
+						_this.avatarUrl = uni.getStorageSync('avatarUrl')
+						_this.nickname = uni.getStorageSync('nickname')
+						
+						_this.memberId = uni.getStorageSync('memberId')
+						_this.getList()
+					}
+				}
+			})
 		},
 		methods: {
 			share(e){
@@ -64,7 +77,7 @@
 					scene: 'WXSceneSession',
 					imageUrl: 'https://www.epoia.cn/Image/logo.png',
 					miniProgram: {
-						id: 'gh_4458a3a81f8e',
+						id: 'gh_2f1eb84c5632',
 						path:'/pages/index/index',
 						type: 2
 					},
@@ -156,6 +169,7 @@
 												
 											},
 											fail(res3) {
+												console.log(12313, res3)
 												uni.showModal({
 													showCancel: false,
 													title: res3.data.Message,

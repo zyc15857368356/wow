@@ -11,7 +11,10 @@
 			"path": "pages/store/store",
 
 			"style": {
-				"navigationBarTitleText": "买它"
+				"navigationBarTitleText": "买它",
+				"app-plus":{
+					"bounce":"none"
+				}
 			}
 		},
 		{
@@ -25,8 +28,8 @@
 			"style": {
 				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false,
-				"pageOrientation": "auto",
-				"navigationStyle":"custom"
+				"pageOrientation": "auto"
+				// "navigationStyle":"custom"
 			}
 		}
 	],

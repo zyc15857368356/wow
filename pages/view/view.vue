@@ -8,7 +8,7 @@
 						<video :custom-cache="false" loop="true" :class="{vdieoHen: isLandScape}" class="video" :id="'id'+i" :enable-play-gesture="true"
 							:enable-progress-gesture="true" :controls="false" :src="fileUrl+ item.Path"
 							:show-center-play-btn="false">
-
+	<!-- object-fit="cover" -->
 						</video>
 					</view>
 				</swiper-item>
@@ -16,7 +16,7 @@
 		</div>
 		<!-- 		<div class="video" id="video" :style="{top: domY ? domY + 'px': '50%'}">
 			<video :src="fileUrl+video.Path" style="width: 100%" autoplay controls show-play-btn
-				auto-pause-if-navigate></video>
+				auto-pause-if-navigate></video>cover
 		</div> -->
 		<div class="handle" v-if="!isLandScape">
 			<div @click="addLike">

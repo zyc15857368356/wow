@@ -185,6 +185,19 @@ var _default =
 
   },
   created: function created() {
+    var _this = this;
+    uni.getStorage({
+      key: "token",
+      success: function success(res) {
+        if (res.data) {
+          _this.token = res.data;
+          _this.avatarUrl = uni.getStorageSync('avatarUrl');
+          _this.nickname = uni.getStorageSync('nickname');
+
+          _this.memberId = uni.getStorageSync('memberId');
+          _this.getList();
+        }
+      } });
 
   },
   methods: {
@@ -196,7 +209,7 @@ var _default =
         scene: 'WXSceneSession',
         imageUrl: 'https://www.epoia.cn/Image/logo.png',
         miniProgram: {
-          id: 'gh_4458a3a81f8e',
+          id: 'gh_2f1eb84c5632',
           path: '/pages/index/index',
           type: 2 },
 
@@ -288,6 +301,7 @@ var _default =
 
                       },
                       fail: function fail(res3) {
+                        console.log(12313, res3);
                         uni.showModal({
                           showCancel: false,
                           title: res3.data.Message,

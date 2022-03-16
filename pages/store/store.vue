@@ -4,28 +4,47 @@
 			<div v-for="(item, i) in typeList" :key="i" style="text-align: center;border-radius: 3px;" :class="{active: index===i}" @click="chose(i)">{{item.title}}</div>
 		</div> -->
 		<div class="container">
-			<div v-for="(item, i) in videoList" class="item" :key="i">
-				<div class="img">
-					<img :src="imgUrl+item.Cover" alt="">
-				</div>
-				<div style="margin-left: 20px;width: 60%">
-					<p class="title">{{item.Titel}}</p>
-					<p style="margin-right: 30px;margin-top:5px" >{{item.Price}}元</p>
-					<div class="buy">
-						<div style="padding: 5px 20px;color: #fff;background: #F0AD4E;border-radius: 20px;font-size: 32rpx" @click="copy(item)">
-							复制淘宝链接
+			<uni-swipe-action>
+				<uni-swipe-action-item v-for="(item,index) in videoList" :key="index" :right-options="options"  @click="bindClick($event, item)" @change="swipeChange($event, index)">
+					<div class="item">
+						<div class="img">
+							<img :src="imgUrl+item.Cover" alt="">
+						</div>
+						<div style="margin-left: 20px;width: 60%">
+							<p class="title">{{item.Titel}}</p>
+							<p style="margin-right: 30px;margin-top:5px" >{{item.Price}}元</p>
+							<div class="buy">
+								<div style="padding: 5px 20px;color: #fff;background: #F0AD4E;border-radius: 20px;font-size: 32rpx" @click="copy(item)">
+									复制淘宝链接
+								</div>
+							</div>
 						</div>
 					</div>
-				</div>
-			</div>
+				</uni-swipe-action-item>
+			</uni-swipe-action>
+	<!-- 		<div v-for="(item, i) in videoList" class="item" :key="i">
+
+			</div> -->
 		</div>
 	</view>
 </template>
 
 <script>
+	import uniSwipeAction from "../../uni_modules/uni-swipe-action/components/uni-swipe-action/uni-swipe-action.vue"
 	export default {
+		components:{
+			'uni-swipe-action': uniSwipeAction
+		},
 		data() {
 			return {
+				options:[
+					{
+						text: '删除',
+						style: {
+							backgroundColor: '#dd524d'
+						}
+					}
+				],
 				index: 0,
 				typeList: [
 					{
@@ -80,6 +99,20 @@
 
 		},
 		methods:{
+			swipeChange() {
+				
+			},
+			bindClick(e,s) {
+				uni.showModal({
+					title: '是否确认删除',
+					success() {
+						
+					},
+					fail() {
+						
+					}
+				})
+			},
 			chose(e) {
 				this.page.page = 1
 				this.page.row = 20
