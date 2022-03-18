@@ -96,10 +96,10 @@ var components
 try {
   components = {
     uniSwipeAction: function() {
-      return __webpack_require__.e(/*! import() | uni_modules/uni-swipe-action/components/uni-swipe-action/uni-swipe-action */ "uni_modules/uni-swipe-action/components/uni-swipe-action/uni-swipe-action").then(__webpack_require__.bind(null, /*! @/uni_modules/uni-swipe-action/components/uni-swipe-action/uni-swipe-action.vue */ 49))
+      return __webpack_require__.e(/*! import() | uni_modules/uni-swipe-action/components/uni-swipe-action/uni-swipe-action */ "uni_modules/uni-swipe-action/components/uni-swipe-action/uni-swipe-action").then(__webpack_require__.bind(null, /*! @/uni_modules/uni-swipe-action/components/uni-swipe-action/uni-swipe-action.vue */ 44))
     },
     uniSwipeActionItem: function() {
-      return Promise.all(/*! import() | uni_modules/uni-swipe-action/components/uni-swipe-action-item/uni-swipe-action-item */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uni_modules/uni-swipe-action/components/uni-swipe-action-item/uni-swipe-action-item")]).then(__webpack_require__.bind(null, /*! @/uni_modules/uni-swipe-action/components/uni-swipe-action-item/uni-swipe-action-item.vue */ 54))
+      return Promise.all(/*! import() | uni_modules/uni-swipe-action/components/uni-swipe-action-item/uni-swipe-action-item */[__webpack_require__.e("common/vendor"), __webpack_require__.e("uni_modules/uni-swipe-action/components/uni-swipe-action-item/uni-swipe-action-item")]).then(__webpack_require__.bind(null, /*! @/uni_modules/uni-swipe-action/components/uni-swipe-action-item/uni-swipe-action-item.vue */ 49))
     }
   }
 } catch (e) {
@@ -156,7 +156,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;var uniSwipeAction = function uniSwipeAction() {__webpack_require__.e(/*! require.ensure | uni_modules/uni-swipe-action/components/uni-swipe-action/uni-swipe-action */ "uni_modules/uni-swipe-action/components/uni-swipe-action/uni-swipe-action").then((function () {return resolve(__webpack_require__(/*! ../../uni_modules/uni-swipe-action/components/uni-swipe-action/uni-swipe-action.vue */ 49));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
+/* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;function _defineProperty(obj, key, value) {if (key in obj) {Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true });} else {obj[key] = value;}return obj;}var uniSwipeAction = function uniSwipeAction() {__webpack_require__.e(/*! require.ensure | uni_modules/uni-swipe-action/components/uni-swipe-action/uni-swipe-action */ "uni_modules/uni-swipe-action/components/uni-swipe-action/uni-swipe-action").then((function () {return resolve(__webpack_require__(/*! ../../uni_modules/uni-swipe-action/components/uni-swipe-action/uni-swipe-action.vue */ 44));}).bind(null, __webpack_require__)).catch(__webpack_require__.oe);};var _default =
 
 
 
@@ -193,8 +193,9 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     'uni-swipe-action': uniSwipeAction },
 
-  data: function data() {
-    return {
+  data: function data() {var _ref;
+    return _ref = {
+      url: 'https://www.epoia.cn',
       options: [
       {
         text: '删除',
@@ -222,16 +223,16 @@ __webpack_require__.r(__webpack_exports__);
 
 
       imgUrl: 'https://www.epoia.cn/Image/',
-      videoList: [],
-      url: 'https://www.epoia.cn',
-      videoType: 0,
-      page: {
-        page: 1,
-        row: 20,
-        total: 0 },
+      videoList: [] }, _defineProperty(_ref, "url",
+    'https://www.epoia.cn'), _defineProperty(_ref, "videoType",
+    0), _defineProperty(_ref, "page",
+    {
+      page: 1,
+      row: 20,
+      total: 0 }), _defineProperty(_ref, "search",
 
-      search: '',
-      memberId: '' };
+    ''), _defineProperty(_ref, "memberId",
+    ''), _ref;
 
   },
   onLoad: function onLoad() {
@@ -261,9 +262,29 @@ __webpack_require__.r(__webpack_exports__);
 
     },
     bindClick: function bindClick(e, s) {
+      var _this = this;
       uni.showModal({
         title: '是否确认删除',
         success: function success() {
+          uni.request({
+            url: _this.url + '/Home/AddVideoInfo',
+            method: 'POST',
+            data: {
+              MemberId: _this.memberId,
+              VideoId: s.Id,
+              Type: 0 },
+
+            success: function success(res) {
+              if (res.data.Success) {
+                // _this.like = !_this.like
+                _this.getList();
+              } else {
+                uni.showToast({
+                  title: res.data.Message,
+                  icon: "none" });
+
+              }
+            } });
 
         },
         fail: function fail() {

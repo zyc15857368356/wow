@@ -7,8 +7,9 @@
 						<img :src="avatarUrl" v-if="avatarUrl">
 					</div>
 				<div style="display: flex;justify-content: center;">
-						<p v-if="nickname">{{nickname}}</p>
-						<open-data type="userNickName" v-else style="text-align: center;" lang="zh_CN"></open-data>
+						<p v-if="nickname" style="text-overflow:ellipsis;overflow:hidden;
+    white-space:nowrap;">{{nickname}}</p>
+						<!-- <open-data type="userNickName" v-else style="text-align: center;" lang="zh_CN"></open-data> -->
 				</div>
 				</div>
 				<div class="share" v-if="token" @click="share">

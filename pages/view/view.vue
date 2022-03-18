@@ -5,6 +5,7 @@
 				:vertical="true" :circular="true" :disable-touch="isLandScape">
 				<swiper-item v-for="(item, i) in PayVideo" :key="i" :id="'id' + i">
 					<view class="swiper-item">
+						<img :src="imgUrl + item.Cover" style="position: absolute;top: 0;left:0;width: 100%;height: 100%;opacity: 0.4;" alt="">
 						<video :custom-cache="false" loop="true" :class="{vdieoHen: isLandScape}" class="video" :id="'id'+i" :enable-play-gesture="true"
 							:enable-progress-gesture="true" :controls="false" :src="fileUrl+ item.Path"
 							:show-center-play-btn="false">
@@ -21,15 +22,15 @@
 		<div class="handle" v-if="!isLandScape">
 			<div @click="addLike">
 				<img :src="like? '../../static/heartSelected.png' : '../../static/heart.png'">
-				<p>喜欢</p>
+				<p>{{model.Thumbcou | numberFliter}}</p>
 			</div>
 			<div @click="addCollect">
 				<img :src="collect?'../../static/collectSelect.png': '../../static/collect.png'">
-				<p>收藏</p>
+				<p>{{model.Collectioncou | numberFliter}}</p>
 			</div>
 			<div @click="addBuy">
 				<img :src="shopping? '../../static/carSelect.png':'../../static/car.png'">
-				<p>买它</p>
+				<p>{{model.Shopcou | numberFliter}}</p>
 			</div>
 		</div>
 	</view>
@@ -122,6 +123,15 @@
 			})
 			this.getVideoInfo()
 		},
+		filters:{
+			numberFliter(newVal) {
+				 if(newVal > 9999){//大于9999显示x.xx万
+				    return newVal=(Math.floor(newVal/1000)/10) + 'W';
+				 }else if( newVal < 9999){
+					return newVal;
+				 }
+			}
+		},
 		mounted() {
 			// uni.onWindowResize( res => {
 			// 	console.log(res.deviceOrientation)
@@ -151,10 +161,13 @@
 						_this.like = res.data.Data.thumbs
 						_this.collect = res.data.Data.collections
 						_this.shopping = res.data.Data.shopping
+						_this.model = res.data.Data.model
+						
 					}
 				})
 			},
 			changefun(e) {
+				console.log(e)
 				this.is_active = false
 				let current = e.detail.current
 				let {
@@ -188,6 +201,7 @@
 				videoContext.seek(0)
 				videoContext.play()
 				this.index_ = current
+				// this.getVideoInfo()
 				this.getBehavior()
 				if (PayVideo.length == len) {
 					return
@@ -281,6 +295,7 @@
 						success(res) {
 							if (res.data.Success) {
 								_this.like = !_this.like
+								_this.getVideoInfo()
 							} else {
 								uni.showToast({
 									title: res.data.Message,
@@ -310,6 +325,7 @@
 						success(res) {
 							if (res.data.Success) {
 								_this.collect = !_this.collect
+								_this.getVideoInfo()
 							} else {
 								uni.showToast({
 									title: res.data.Message,
@@ -339,6 +355,7 @@
 						success(res) {
 							if (res.data.Success) {
 								_this.shopping = !_this.shopping
+								_this.getVideoInfo()
 							} else {
 								uni.showToast({
 									title: res.data.Message,
@@ -386,9 +403,15 @@
 		right: 17px;
 
 		&>div {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			margin: 10px 0;
 			p {
 				color: #fff;
 				font-size: 32rpx;
+				text-align: center;
+				
 			}
 
 			img {

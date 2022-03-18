@@ -97,6 +97,21 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
+  var f0 = !_vm.isLandScape ? _vm._f("numberFliter")(_vm.model.Thumbcou) : null
+  var f1 = !_vm.isLandScape
+    ? _vm._f("numberFliter")(_vm.model.Collectioncou)
+    : null
+  var f2 = !_vm.isLandScape ? _vm._f("numberFliter")(_vm.model.Shopcou) : null
+  _vm.$mp.data = Object.assign(
+    {},
+    {
+      $root: {
+        f0: f0,
+        f1: f1,
+        f2: f2
+      }
+    }
+  )
 }
 var recyclableRender = false
 var staticRenderFns = []
@@ -131,6 +146,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(uni) {Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0; //
+//
 //
 //
 //
@@ -254,6 +270,15 @@ var _default =
 
     this.getVideoInfo();
   },
+  filters: {
+    numberFliter: function numberFliter(newVal) {
+      if (newVal > 9999) {//大于9999显示x.xx万
+        return newVal = Math.floor(newVal / 1000) / 10 + 'W';
+      } else if (newVal < 9999) {
+        return newVal;
+      }
+    } },
+
   mounted: function mounted() {
     // uni.onWindowResize( res => {
     // 	console.log(res.deviceOrientation)
@@ -283,10 +308,13 @@ var _default =
           _this.like = res.data.Data.thumbs;
           _this.collect = res.data.Data.collections;
           _this.shopping = res.data.Data.shopping;
+          _this.model = res.data.Data.model;
+
         } });
 
     },
     changefun: function changefun(e) {
+      console.log(e);
       this.is_active = false;
       var current = e.detail.current;var
 
@@ -320,6 +348,7 @@ var _default =
       videoContext.seek(0);
       videoContext.play();
       this.index_ = current;
+      // this.getVideoInfo()
       this.getBehavior();
       if (PayVideo.length == len) {
         return;
@@ -413,6 +442,7 @@ var _default =
           success: function success(res) {
             if (res.data.Success) {
               _this.like = !_this.like;
+              _this.getVideoInfo();
             } else {
               uni.showToast({
                 title: res.data.Message,
@@ -442,6 +472,7 @@ var _default =
           success: function success(res) {
             if (res.data.Success) {
               _this.collect = !_this.collect;
+              _this.getVideoInfo();
             } else {
               uni.showToast({
                 title: res.data.Message,
@@ -471,6 +502,7 @@ var _default =
           success: function success(res) {
             if (res.data.Success) {
               _this.shopping = !_this.shopping;
+              _this.getVideoInfo();
             } else {
               uni.showToast({
                 title: res.data.Message,

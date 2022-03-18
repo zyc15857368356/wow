@@ -37,6 +37,7 @@
 		},
 		data() {
 			return {
+				url: 'https://www.epoia.cn',
 				options:[
 					{
 						text: '删除',
@@ -103,10 +104,30 @@
 				
 			},
 			bindClick(e,s) {
+				var _this = this
 				uni.showModal({
 					title: '是否确认删除',
 					success() {
-						
+						uni.request({
+							url: _this.url + '/Home/AddVideoInfo',
+							method: 'POST',
+							data: {
+								MemberId: _this.memberId,
+								VideoId: s.Id,
+								Type: 0
+							},
+							success(res) {
+								if (res.data.Success) {
+									// _this.like = !_this.like
+									_this.getList()
+								} else {
+									uni.showToast({
+										title: res.data.Message,
+										icon: "none"
+									})
+								}
+							}
+						})
 					},
 					fail() {
 						
