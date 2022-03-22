@@ -8824,6 +8824,17 @@ function resolveLocaleChain(locale) {
 
 /***/ }),
 
+/***/ 42:
+/*!*************************************!*\
+  !*** D:/zyc/wow/static/headImg.jpg ***!
+  \*************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "/static/headImg.jpg";
+
+/***/ }),
+
 /***/ 5:
 /*!*****************************!*\
   !*** D:/zyc/wow/pages.json ***!
@@ -8835,7 +8846,7 @@ function resolveLocaleChain(locale) {
 
 /***/ }),
 
-/***/ 56:
+/***/ 57:
 /*!*****************************************************************************************!*\
   !*** D:/zyc/wow/uni_modules/uni-swipe-action/components/uni-swipe-action-item/mpwxs.js ***!
   \*****************************************************************************************/
@@ -8845,7 +8856,7 @@ function resolveLocaleChain(locale) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });exports.default = void 0;
 
-var _isPC = __webpack_require__(/*! ./isPC */ 57);var mpMixins = {};
+var _isPC = __webpack_require__(/*! ./isPC */ 58);var mpMixins = {};
 
 
 mpMixins = {
@@ -8928,7 +8939,7 @@ mpMixins;exports.default = _default;
 
 /***/ }),
 
-/***/ 57:
+/***/ 58:
 /*!****************************************************************************************!*\
   !*** D:/zyc/wow/uni_modules/uni-swipe-action/components/uni-swipe-action-item/isPC.js ***!
   \****************************************************************************************/
@@ -8951,7 +8962,7 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.isPC = isP
 
 /***/ }),
 
-/***/ 58:
+/***/ 59:
 /*!********************************************************************************************!*\
   !*** D:/zyc/wow/uni_modules/uni-swipe-action/components/uni-swipe-action-item/bindingx.js ***!
   \********************************************************************************************/
@@ -9262,7 +9273,7 @@ bindIngXMixins;exports.default = _default;
 
 /***/ }),
 
-/***/ 59:
+/***/ 60:
 /*!*******************************************************************************************!*\
   !*** D:/zyc/wow/uni_modules/uni-swipe-action/components/uni-swipe-action-item/mpother.js ***!
   \*******************************************************************************************/

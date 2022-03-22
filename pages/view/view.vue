@@ -12,6 +12,30 @@
 							<!-- object-fit="cover" -->
 						</video>
 					</view>
+					<div class="bottomNav" v-if="!isLandScape">
+						<div style="display: flex;align-items: center;">
+							<div class="headImg">
+								<img src="../../static/headImg.jpg">
+							</div>
+							<div style="color:#fff;margin-left: 20rpx;font-size: 32rpx;">
+								admin
+							</div>
+						</div>
+						<div class="operation">
+							<div @click="addLike">
+								<img :src="like? '../../static/heartSelected.png' : '../../static/heart.png'">
+								<p style="font-size: 24rpx">{{model.Thumbcou | numberFliter}}</p>
+							</div>
+							<div @click="addCollect">
+								<img :src="collect?'../../static/collectSelect.png': '../../static/collect.png'">
+								<p style="font-size: 24rpx">{{model.Collectioncou | numberFliter}}</p>
+							</div>
+							<div @click="addBuy">
+								<img :src="shopping? '../../static/carSelect.png':'../../static/car.png'">
+								<p style="font-size: 24rpx">{{model.Shopcou | numberFliter}}</p>
+							</div>
+						</div>
+					</div>
 				</swiper-item>
 			</swiper>
 		</div>
@@ -19,20 +43,7 @@
 			<video :src="fileUrl+video.Path" style="width: 100%" autoplay controls show-play-btn
 				auto-pause-if-navigate></video>cover
 		</div> -->
-		<div class="handle" v-if="!isLandScape">
-			<div @click="addLike">
-				<img :src="like? '../../static/heartSelected.png' : '../../static/heart.png'">
-				<p>{{model.Thumbcou | numberFliter}}</p>
-			</div>
-			<div @click="addCollect">
-				<img :src="collect?'../../static/collectSelect.png': '../../static/collect.png'">
-				<p>{{model.Collectioncou | numberFliter}}</p>
-			</div>
-			<div @click="addBuy">
-				<img :src="shopping? '../../static/carSelect.png':'../../static/car.png'">
-				<p>{{model.Shopcou | numberFliter}}</p>
-			</div>
-		</div>
+
 	</view>
 </template>
 
@@ -410,28 +421,24 @@
 		height: 100%;
 	}
 
-	.handle {
-		position: absolute;
-		bottom: 21px;
-		right: 17px;
-
+	.operation {
+		display: flex;
+		align-items: center;
 		&>div {
 			display: flex;
 			flex-direction: column;
 			align-items: center;
-			margin: 10px 0;
-
+			margin: 0 24rpx;
 			p {
 				color: #fff;
 				font-size: 32rpx;
 				text-align: center;
-
 			}
 
 			img {
 				display: block;
-				width: 60rpx;
-				height: 60rpx;
+				width: 50rpx;
+				height: 50rpx;
 			}
 		}
 	}
@@ -479,5 +486,30 @@
 	.contain {
 		width: 100% !important;
 		height: 100% !important
+	}
+	.bottomNav{
+		position: absolute;
+		width: 100%;
+		height: 80px;
+		background: #fff;
+		bottom: 0;
+		padding: 0 30rpx;
+		box-sizing: border-box;
+	}
+	.headImg{
+		width: 80rpx;
+		height: 80rpx;
+		border-radius: 50%;
+		overflow: hidden;
+		&>img{
+			width: 100%;
+			height: 100%;
+			display: block;
+		}
+	}
+	.bottomNav{
+		display: flex;
+		justify-content: space-between;
+		background: #1c1c1c;
 	}
 </style>
