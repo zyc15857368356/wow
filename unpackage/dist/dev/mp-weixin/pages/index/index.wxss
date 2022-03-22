@@ -29,9 +29,6 @@
   overflow: hidden;
   padding: 0 5px;
   background: #fff;
-  border-radius: 0;
-  border-bottom-left-radius: 5px;
-  border-bottom-right-radius: 5px;
 }
 .types {
   display: flex;
@@ -41,13 +38,13 @@
           transform: translateY(6px);
 }
 .types > ._div .typeTitle {
-  width: 65px;
-  padding: 5px 5px;
+  padding: 5px 0px;
+  color: #666;
 }
 .selected {
-  color: #FB7299;
+  color: #FB7299 !important;
   font-weight: bold;
-  border-bottom: 2px solid #FB7299;
+  border-bottom: 5px solid #FB7299;
 }
 .body {
   padding: 10px 5px;
@@ -75,6 +72,7 @@ wx-swiper .wx-swiper-dot {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  font-size: 30rpx;
 }
 .videos {
   display: flex;
@@ -85,13 +83,13 @@ wx-swiper .wx-swiper-dot {
   margin: 20rpx 0 0;
   width: 49%;
   background: #fff;
-  border-radius: 5px;
-  padding-bottom: 10px;
+  border-radius: 3px;
 }
 .videos > .item ._p {
-  font-size: 32rpx;
-  padding: 3px 10px;
-  line-height: 44rpx;
+  font-size: 24rpx;
+  font-weight: 600;
+  padding: 0px 10px;
+  line-height: 40rpx;
 }
 .videos > .item .tag {
   color: #f9c93e;
@@ -105,15 +103,15 @@ wx-swiper .wx-swiper-dot {
 }
 .container1 > ._div {
   display: flex;
-  padding: 10px 10px;
+  padding: 5px 10px 0;
   align-items: center;
   background: #fff;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
 }
 .headImg {
-  width: 90rpx;
-  height: 90rpx;
+  width: 80rpx;
+  height: 80rpx;
   border-radius: 50%;
   border: 1px solid #ccc;
   margin-right: 10px;
@@ -121,14 +119,19 @@ wx-swiper .wx-swiper-dot {
 }
 .searchInpt {
   background: #eee;
-  height: 30px;
+  height: 32px;
   border-radius: 20px;
   display: flex;
   padding-left: 10px;
   align-items: center;
+  width: 200px;
 }
 .searchInpt input {
   margin-left: 10px;
   font-size: 12px;
+  color: black;
+}
+.curtain {
+  background-image: linear-gradient(to top, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0));
 }
 

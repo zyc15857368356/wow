@@ -13,41 +13,43 @@
 						v-if="search" @click="reset"></icon>
 				</div>
 			</div>
-			<div class="box" style="padding: 0 5px;">
+			<div class="box" style="padding: 0 5px;border-radius: 0;border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;">
 				<div class="types" style="padding: 0 0px;">
 					<div v-for="(item, i) in typeList" :key="i" @click="selectType(item)" style="padding: 0 10px;">
-						<p class="typeTitle" :class="{selected: item.select}" @click="chose(i)">{{item.Name}}</p>
+						<p class="typeTitle" :class="{selected: item.select}" @click="chose(i)" style="font-size: 32rpx;min-width: 64px;"
+						>{{item.Name}}</p>
 					</div>
 				</div>
 			</div>
 		</div>
-		<div style="margin-top: 97px">
+		<div style="margin-top: 85px">
 			<scroll-view style="height: calc( 100vh - 105px )" :scroll-top="scrollTop" scroll-y="true" class="scroll-Y"
 				@scrolltoupper="upper" @scrolltolower="lower" @scroll="scroll">
 				<div class="body">
-					<div style="border-radius: 5px;overflow: hidden;">
+					<div style="border-radius: 3px;overflow: hidden;">
 						<swiper class="swiper" :indicator-dots="indicatorDots" :autoplay="autoplay"
+						style="height: 200px"
 							indicator-color="rgba(255, 255, 255, 0.5)" indicator-active-color="#fff">
 							<swiper-item v-for="(item, i) in swiperList" :key="i" @click="watchVideo(item)">
 								<img :src="imgUrl+item.Cover" style="width: 100%">
-								<p class="swiperTitle" style="width: 76%">{{item.Titel}}</p>
+								<p class="swiperTitle" style="width: 70%">{{item.Titel}}</p>
 							</swiper-item>
 						</swiper>
 					</div>
 					<div class="videos">
 						<div class="item" v-for="(item, i) in videoList" :key="i" @click="watchVideo(item)" style="overflow: hidden;">
-							<div style="position: relative;height: 90px">
-								<img :src="imgUrl+item.Cover" style="width: 100%;height:90px;display: block;">
-								<div style="width: 100%;position: absolute;bottom: 0%;left: 0;height: 20px;background: rgba(0, 0, 0, 0.3);z-index: 100;display: flex;justify-content: space-between;padding: 0 5px;box-sizing: border-box;">
+							<div style="position: relative;height: 105px">
+								<img :src="imgUrl+item.Cover" style="width: 100%;height:105px;display: block;">
+								<div class="curtain" style="width: 100%;position: absolute;bottom: 0%;left: 0;height: 28px;z-index: 100;display: flex;justify-content: space-between;padding: 0 5px;box-sizing: border-box;">
 									<div style="display: flex;align-items: center;">
 										<img style="width: 15px;height: 15px" src="../../static/play.png">
-										<p style="color: #fff;font-size: 24rpx;padding: 0;margin-left: 5px;">{{item.Volume}}</p>
+										<p style="color: #fff;padding: 0;margin-left: 5px;font-weight: 100;">{{item.Volume}}</p>
 									</div>
-									<p style="font-size: 24rpx;color:#fff;padding: 0">{{item.Duration | timeFilter}}</p>
+									<p style="font-size: 24rpx;color:#fff;padding: 0;font-weight: 100;">{{item.Duration | timeFilter}}</p>
 								</div>
 							</div>
 							<p
-								style="height: 45px;overflow: hidden;text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp: 2;-webkit-box-orient: vertical;">
+								style="overflow: hidden;text-overflow: ellipsis;display: -webkit-box;-webkit-line-clamp: 2;-webkit-box-orient: vertical;min-height: 33px;margin-top: 20rpx;font-size: 28rpx;">
 								{{item.Titel}}
 							</p>
 							<p style="font-size: 24rpx;color: #999;margin-top: 10px">{{item.Name}}</p>
@@ -241,9 +243,7 @@
 		overflow: hidden;
 		padding: 0 5px;
 		background: #fff;
-		border-radius: 0;
-		border-bottom-left-radius: 5px;
-		border-bottom-right-radius: 5px;
+
 	}
 
 	.types {
@@ -254,16 +254,16 @@
 
 		&>div {
 			.typeTitle {
-				width: 65px;
-				padding: 5px 5px
+				padding: 5px 0px;
+				color:#666
 			}
 		}
 	}
 
 	.selected {
-		color: #FB7299;
+		color: #FB7299!important;
 		font-weight:bold;
-		border-bottom: 2px solid #FB7299;
+		border-bottom: 5px solid #FB7299;
 	}
 
 	.body {
@@ -295,7 +295,8 @@
 		background-image: linear-gradient(to top, rgba(0, 0, 0, .3), rgba(0, 0, 0, 0));
 		overflow: hidden;
 		text-overflow: ellipsis;
-		white-space: nowrap
+		white-space: nowrap;
+		font-size: 30rpx;
 	}
 
 	.videos {
@@ -308,13 +309,12 @@
 		margin: 20rpx 0 0;
 		width: 49%;
 		background: #fff;
-		border-radius: 5px;
-		padding-bottom: 10px;
-
+		border-radius: 3px;
 		p {
-			font-size: 32rpx;
-			padding: 3px 10px;
-			line-height: 44rpx;
+			font-size: 24rpx;
+			font-weight: 600;
+			padding: 0px 10px;
+			line-height: 40rpx;
 		}
 
 		.tag {
@@ -333,7 +333,7 @@
 
 	.container1>div {
 		display: flex;
-		padding: 10px 10px;
+		padding: 5px 10px 0;
 		align-items: center;
 		background: #fff;
 		border-top-left-radius: 5px;
@@ -341,8 +341,8 @@
 	}
 
 	.headImg {
-		width: 90rpx;
-		height: 90rpx;
+		width: 80rpx;
+		height: 80rpx;
 		border-radius: 50%;
 		border: 1px solid #ccc;
 		margin-right: 10px;
@@ -351,15 +351,19 @@
 
 	.searchInpt {
 		background: #eee;
-		height: 30px;
+		height: 32px;
 		border-radius: 20px;
 		display: flex;
 		padding-left: 10px;
 		align-items: center;
-
+		width: 200px;
 		input {
 			margin-left: 10px;
 			font-size: 12px;
+			color: transparentize($color: #000000, $amount: 0);
 		}
+	}
+	.curtain{
+		background-image: linear-gradient(to top, rgba(0,0,0,0.4), rgba(0,0,0, 0));
 	}
 </style>

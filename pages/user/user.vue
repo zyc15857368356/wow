@@ -274,7 +274,7 @@
 		justify-content: space-between;
 		&>div{
 			width: 49%;
-			height: 400rpx;
+			height: 320rpx;
 			&>img{
 				width:100%;
 				height: 100%;

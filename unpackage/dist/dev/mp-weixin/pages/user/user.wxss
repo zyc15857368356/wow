@@ -89,7 +89,7 @@
 }
 .list > ._div {
   width: 49%;
-  height: 400rpx;
+  height: 320rpx;
 }
 .list > ._div > ._img {
   width: 100%;
