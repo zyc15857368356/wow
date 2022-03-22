@@ -104,6 +104,7 @@
 				
 			},
 			bindClick(e,s) {
+				
 				var _this = this
 				uni.showModal({
 					title: '是否确认删除',
@@ -114,11 +115,10 @@
 							data: {
 								MemberId: _this.memberId,
 								VideoId: s.Id,
-								Type: 0
+								Type: 3
 							},
 							success(res) {
 								if (res.data.Success) {
-									// _this.like = !_this.like
 									_this.getList()
 								} else {
 									uni.showToast({
@@ -208,6 +208,7 @@
 					method: 'GET',
 					data: data,
 					success(res) {
+						console.log(res)
 						if(res.data.Success) {
 							_this.videoList = res.data.Data
 						} else {
@@ -246,10 +247,12 @@
 		width: 240rpx;
 		height: 240rpx;
 		overflow: hidden;
+		display: flex;
+		align-items: center;
 		img{
 			display: block;
 			width: 100%;
-			height: 100%
+			height: 80%
 		}
 	}
 	.title{

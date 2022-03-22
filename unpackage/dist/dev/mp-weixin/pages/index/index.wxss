@@ -25,27 +25,35 @@
 /* 透明度 */
 /* 文章场景相关 */
 .box {
-  height: 35px;
+  height: 40px;
   overflow: hidden;
-  padding: 0 10px;
+  padding: 0 5px;
   background: #fff;
+  border-radius: 0;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
 .types {
   display: flex;
   overflow-x: scroll;
+  height: 45px;
+  -webkit-transform: translateY(6px);
+          transform: translateY(6px);
 }
 .types > ._div .typeTitle {
-  width: 40px;
-  padding: 5px 10px;
+  width: 65px;
+  padding: 5px 5px;
 }
 .selected {
-  color: #FFC0CB;
+  color: #FB7299;
+  font-weight: bold;
+  border-bottom: 2px solid #FB7299;
 }
 .body {
-  padding: 10px;
+  padding: 10px 5px;
 }
 .container {
-  padding: 10px;
+  padding: 5px;
 }
 .swiper {
   position: relative;
@@ -74,7 +82,7 @@ wx-swiper .wx-swiper-dot {
   flex-wrap: wrap;
 }
 .videos > .item {
-  margin: 20rpx 0;
+  margin: 20rpx 0 0;
   width: 49%;
   background: #fff;
   border-radius: 5px;
@@ -92,7 +100,7 @@ wx-swiper .wx-swiper-dot {
   margin-top: 40rpx;
 }
 .container1 {
-  width: calc( 100% - 20px);
+  width: calc(100% - 10px);
   position: fixed;
 }
 .container1 > ._div {
@@ -100,7 +108,8 @@ wx-swiper .wx-swiper-dot {
   padding: 10px 10px;
   align-items: center;
   background: #fff;
-  border-radius: 5px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
 }
 .headImg {
   width: 90rpx;

@@ -5,11 +5,11 @@
 				:vertical="true" :circular="true" :disable-touch="isLandScape">
 				<swiper-item v-for="(item, i) in PayVideo" :key="i" :id="'id' + i">
 					<view class="swiper-item">
-						<img :src="imgUrl + item.Cover" style="position: absolute;top: 0;left:0;width: 100%;height: 100%;opacity: 0.4;" alt="">
-						<video :custom-cache="false" loop="true" :class="{vdieoHen: isLandScape}" class="video" :id="'id'+i" :enable-play-gesture="true"
-							:enable-progress-gesture="true" :controls="false" :src="fileUrl+ item.Path"
-							:show-center-play-btn="false">
-	<!-- object-fit="cover" -->
+						<video :custom-cache="false" loop="true"
+							:class="{vdieoHen: isLandScape,contain: item.Width < item.Height}" class="video"
+							:id="'id'+i" :enable-play-gesture="true" :enable-progress-gesture="true" :controls="true"
+							:src="fileUrl+ item.Path" :show-center-play-btn="false">
+							<!-- object-fit="cover" -->
 						</video>
 					</view>
 				</swiper-item>
@@ -72,7 +72,8 @@
 				current_i: 2,
 				_arr: [],
 				len: 0,
-				isLandScape: false
+				isLandScape: false,
+				videoType: null
 			}
 		},
 		props: {
@@ -98,16 +99,7 @@
 		onLoad(option) {
 			this.path = option.path
 			this.id = option.id
-			// // #ifdef MP-WEIXIN
-			// plus.screen.lockOrientation('default');
-			// // #endif
-		},
-		onUnload() {
-			// // #ifdef MP-WEIXIN
-			// plus.screen.lockOrientation('portrait-primary');
-			// // #endif
-		},
-		onShow() {
+			this.videoType = option.type
 			var that = this
 			uni.getStorage({
 				key: "token",
@@ -121,15 +113,22 @@
 					that.memberId = res.data
 				}
 			})
+
+		},
+		onUnload() {
+
+		},
+		onShow() {
+
 			this.getVideoInfo()
 		},
-		filters:{
+		filters: {
 			numberFliter(newVal) {
-				 if(newVal > 9999){//大于9999显示x.xx万
-				    return newVal=(Math.floor(newVal/1000)/10) + 'W';
-				 }else if( newVal < 9999){
+				if (newVal > 9999) { //大于9999显示x.xx万
+					return newVal = (Math.floor(newVal / 1000) / 10) + 'W';
+				} else if (newVal < 9999) {
 					return newVal;
-				 }
+				}
 			}
 		},
 		mounted() {
@@ -155,20 +154,19 @@
 					methods: 'GET',
 					data: {
 						id: this.PayVideo[this.index_].Id,
-						memberId: _this.memberId
+						memberId: _this.memberId,
+						videoTypeId: _this.videoType
 					},
 					success(res) {
 						_this.like = res.data.Data.thumbs
 						_this.collect = res.data.Data.collections
 						_this.shopping = res.data.Data.shopping
 						_this.model = res.data.Data.model
-						
 					}
 				})
 			},
 			changefun(e) {
-				console.log(e)
-				this.is_active = false
+				// this.is_active = false
 				let current = e.detail.current
 				let {
 					len,
@@ -192,8 +190,9 @@
 				} = this
 				let _arr = this._arr
 				let current = e.detail.current
-				this.is_active = true
-				PayVideo[current]['istrue'] = true
+				// this.is_active = true
+				// PayVideo[current]['istrue'] = true
+				let video = this.fileUrl + this.PayVideo[current].Path
 				this.PayVideo = PayVideo
 				let videoContext = uni.createVideoContext('id' + (index_ - 1))
 				videoContext.pause()
@@ -206,8 +205,8 @@
 				if (PayVideo.length == len) {
 					return
 				}
-				this.PayVideo.push(_arr[active])
-				this.active += 1
+				// this.PayVideo.push(_arr[active])
+				// this.active += 1
 			},
 			getVideoInfo() {
 				new Promise((resolve, reject) => {
@@ -232,46 +231,58 @@
 						methods: 'GET',
 						data: {
 							id: this.id,
-							memberId: _this.memberId
+							memberId: _this.memberId,
+							videoTypeId: _this.videoType
 						},
 						success(res) {
-							_this.prev = res.data.Data.prevmodel
-							_this.next = res.data.Data.nextmodel
-							_this.model = res.data.Data.model
-							_this.like = res.data.Data.thumbs
-							_this.PayVideo = res.data.Data.data
-							_this.collect = res.data.Data.collections
-							_this.shopping = res.data.Data.shopping
-							let ind = 1
-							_this.index = ind
-							const video = _this.PayVideo
-							const len = video.length
-							let b_arr = []
-							let s_arr = []
-							video.forEach((res, index) => {
-								if (ind <= index) {
-									b_arr.push(res)
-								} else {
-									s_arr.push(res)
+							console.log(res.data.Data)
+							if (res.data.Data.data.length > 0) {
+								_this.prev = res.data.Data.prevmodel
+								_this.next = res.data.Data.nextmodel
+								_this.model = res.data.Data.model
+								_this.like = res.data.Data.thumbs
+								_this.PayVideo = res.data.Data.data
+								_this.collect = res.data.Data.collections
+								_this.shopping = res.data.Data.shopping
+								let ind = 0
+								for (let i = 0; i < _this.PayVideo.length; i++) {
+									if (_this.model.Id === _this.PayVideo[i].Id) {
+										ind = i
+									}
 								}
-							})
+								_this.index = ind
+								const video = _this.PayVideo
+								const len = video.length
+								let _arr = []
+								let b_arr = []
+								let s_arr = []
+								if (video.length > 1) {
+									video.forEach((res, index) => {
+										if (ind <= index) {
+											b_arr.push(res)
+										} else {
+											s_arr.push(res)
+										}
+									})
 
-							let _arr = b_arr.concat(s_arr.reverse())
-							_arr = _arr.map(res => {
-								res['istrue'] = false
-								return res
-							})
-							_arr[0]['istrue'] = true
-							const PayVideo = [
-								_arr[len - 1], _arr[0], _arr[1]
-							]
-							_this.PayVideo = PayVideo
-							_this._arr = _arr
-							_this.len = len
-							_this.$nextTick(function() {
+									_arr = b_arr.concat(s_arr.reverse())
+								} else {
+									_arr = video
+								}
+								_arr = _arr.map(res => {
+									res['istrue'] = false
+									return res
+								})
+								_arr[ind]['istrue'] = true
+								// const PayVideo = [
+								// 	_arr[len - 1], _arr[0], _arr[1]
+								// ]
+								_this.PayVideo = _arr
+								_this._arr = _arr
+								// _this.len = le
 								let videoContext = uni.createVideoContext('id0')
 								videoContext.play()
-							})
+							}
 						}
 					})
 				})
@@ -394,9 +405,11 @@
 		transform: translateY(-50%);
 
 	}
-	.vdieoHen{
+
+	.vdieoHen {
 		height: 100%;
 	}
+
 	.handle {
 		position: absolute;
 		bottom: 21px;
@@ -407,11 +420,12 @@
 			flex-direction: column;
 			align-items: center;
 			margin: 10px 0;
+
 			p {
 				color: #fff;
 				font-size: 32rpx;
 				text-align: center;
-				
+
 			}
 
 			img {
@@ -460,5 +474,10 @@
 			display: block;
 			height: 100%
 		}
+	}
+
+	.contain {
+		width: 100% !important;
+		height: 100% !important
 	}
 </style>

@@ -38,11 +38,13 @@
   width: 240rpx;
   height: 240rpx;
   overflow: hidden;
+  display: flex;
+  align-items: center;
 }
 .item > .img ._img {
   display: block;
   width: 100%;
-  height: 100%;
+  height: 80%;
 }
 .title {
   overflow: hidden;
