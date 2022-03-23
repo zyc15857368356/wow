@@ -102,4 +102,11 @@
 		height: 100%;
 		background: #eee;
 	}
+	@font-face {
+		font-family: 'ResourceHanRoundedSC';
+		src: url('~@/font/notosanssc-regular.otf');
+	}
+	p{
+		font-style: ResourceHanRoundedSC;
+	}
 </style>

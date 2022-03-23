@@ -402,6 +402,7 @@
 	.container {
 		height: 100%;
 		position: relative;
+
 	}
 
 	.swiper {
@@ -485,7 +486,8 @@
 
 	.contain {
 		width: 100% !important;
-		height: 100% !important
+		height: 90% !important;
+		top:"90%"
 	}
 	.bottomNav{
 		position: absolute;

@@ -32,7 +32,9 @@
 							indicator-color="rgba(255, 255, 255, 0.5)" indicator-active-color="#fff">
 							<swiper-item v-for="(item, i) in swiperList" :key="i" @click="watchVideo(item)">
 								<img :src="imgUrl+item.Cover" style="width: 100%">
-								<p class="swiperTitle" style="width: 70%">{{item.Titel}}</p>
+								<div class="swiperTitle" style="width: 100%">
+									<p style="width: 70%;height: 30px;line-height: 30px;">{{item.Titel}}</p>
+								</div>
 							</swiper-item>
 						</swiper>
 					</div>
@@ -45,7 +47,7 @@
 										<img style="width: 15px;height: 15px" src="../../static/play.png">
 										<p style="color: #fff;padding: 0;margin-left: 5px;font-weight: 100;">{{item.Volume}}</p>
 									</div>
-									<p style="font-size: 24rpx;color:#fff;padding: 0;font-weight: 100;">{{item.Duration | timeFilter}}</p>
+									<p style="font-size: 24rpx;color:#fff;padding: 0;font-weight: 100;line-height: 28px;">{{item.Duration | timeFilter}}</p>
 								</div>
 							</div>
 							<p
@@ -261,9 +263,9 @@
 	}
 
 	.selected {
-		color: #FB7299!important;
+		color: #EB8E18!important;
 		font-weight:bold;
-		border-bottom: 5px solid #FB7299;
+		border-bottom: 5px solid #EB8E18;
 	}
 
 	.body {
@@ -292,7 +294,7 @@
 		width: 100%;
 		height: 30px;
 		padding-top: 10px;
-		background-image: linear-gradient(to top, rgba(0, 0, 0, .3), rgba(0, 0, 0, 0));
+		background-image: linear-gradient(to top, rgba(0, 0, 0, .6), rgba(0, 0, 0, 0));
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
@@ -310,9 +312,9 @@
 		width: 49%;
 		background: #fff;
 		border-radius: 3px;
+		padding-bottom: 10rpx;
 		p {
 			font-size: 24rpx;
-			font-weight: 600;
 			padding: 0px 10px;
 			line-height: 40rpx;
 		}
@@ -364,6 +366,6 @@
 		}
 	}
 	.curtain{
-		background-image: linear-gradient(to top, rgba(0,0,0,0.4), rgba(0,0,0, 0));
+		background-image: linear-gradient(to top, rgba(0,0,0,0.6), rgba(0,0,0, 0));
 	}
 </style>

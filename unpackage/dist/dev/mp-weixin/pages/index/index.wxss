@@ -42,9 +42,9 @@
   color: #666;
 }
 .selected {
-  color: #FB7299 !important;
+  color: #EB8E18 !important;
   font-weight: bold;
-  border-bottom: 5px solid #FB7299;
+  border-bottom: 5px solid #EB8E18;
 }
 .body {
   padding: 10px 5px;
@@ -68,7 +68,7 @@ wx-swiper .wx-swiper-dot {
   width: 100%;
   height: 30px;
   padding-top: 10px;
-  background-image: linear-gradient(to top, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0));
+  background-image: linear-gradient(to top, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0));
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -84,10 +84,10 @@ wx-swiper .wx-swiper-dot {
   width: 49%;
   background: #fff;
   border-radius: 3px;
+  padding-bottom: 10rpx;
 }
 .videos > .item ._p {
   font-size: 24rpx;
-  font-weight: 600;
   padding: 0px 10px;
   line-height: 40rpx;
 }
@@ -132,6 +132,6 @@ wx-swiper .wx-swiper-dot {
   color: black;
 }
 .curtain {
-  background-image: linear-gradient(to top, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0));
+  background-image: linear-gradient(to top, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0));
 }
 

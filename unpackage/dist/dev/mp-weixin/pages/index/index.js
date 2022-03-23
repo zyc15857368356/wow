@@ -224,6 +224,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
 var _index = __webpack_require__(/*! ../../util/index.js */ 19); //
 //
 //
@@ -288,9 +290,9 @@ var _index = __webpack_require__(/*! ../../util/index.js */ 19); //
 //
 //
 //
-var _default = { data: function data() {return { avatarUrl: '', url: 'https://www.epoia.cn', fileUrl: 'https://www.epoia.cn/Data', imgUrl: 'https://www.epoia.cn/Image/', videoUrl: 'https://www.epoia.cn/Data/Video/', indicatorDots: true, autoplay: true, title: 'Hello', page: { page: 1, row: 20, total: 0 }, videoType: 0, search: '', typeList: [], swiperList: [], videoList: [] };}, onLoad: function onLoad() {}, onShow: function onShow() {var _that = this;uni.getStorage({ key: 'avatarUrl', success: function success(res) {_that.avatarUrl = res.data;} });}, created: function created() {this.getTypeList();}, filters: { timeFilter: function timeFilter(newVal) {return (0, _index.formatSeconds)(newVal);} }, methods: { reset: function reset() {this.search = '';this.getList();}, selectType: function selectType(e) {this.page.page = 1;this.page.row = 20;this.search = '';this.id = e.Id;this.getList();}, scroll: function scroll() {}, lower: function lower() {this.page.page += 1;var data = { pageIndex: this.page.page, pageSize: this.page.row, search: this.search,
-        videoType: this.videoType };
-
+//
+//
+var _default = { data: function data() {return { avatarUrl: '', url: 'https://www.epoia.cn', fileUrl: 'https://www.epoia.cn/Data', imgUrl: 'https://www.epoia.cn/Image/', videoUrl: 'https://www.epoia.cn/Data/Video/', indicatorDots: true, autoplay: true, title: 'Hello', page: { page: 1, row: 20, total: 0 }, videoType: 0, search: '', typeList: [], swiperList: [], videoList: [] };}, onLoad: function onLoad() {}, onShow: function onShow() {var _that = this;uni.getStorage({ key: 'avatarUrl', success: function success(res) {_that.avatarUrl = res.data;} });}, created: function created() {this.getTypeList();}, filters: { timeFilter: function timeFilter(newVal) {return (0, _index.formatSeconds)(newVal);} }, methods: { reset: function reset() {this.search = '';this.getList();}, selectType: function selectType(e) {this.page.page = 1;this.page.row = 20;this.search = '';this.id = e.Id;this.getList();}, scroll: function scroll() {}, lower: function lower() {this.page.page += 1;var data = { pageIndex: this.page.page, pageSize: this.page.row, search: this.search, videoType: this.videoType };
       var _this = this;
       uni.request({
         url: this.url + '/Home/GetVideoList',

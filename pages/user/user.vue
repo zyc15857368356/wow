@@ -28,7 +28,7 @@
 			<div class="list" v-if="memberId">
 				<div v-for="(item, i) in list" :key="i" @click="watchVideo(item)" style="margin-bottom: 10px;position: relative;overflow: hidden;">
 					<img :src="imgUrl+item.Cover">
-					<p style="position: absolute;bottom: 0;width: 100%;height: 28px;background: rgba(3, 3, 3, 0.6);color:#fff;z-index:1000;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;padding: 0 5px;font-size: 14px">{{item.Titel}}</p>
+					<p style="position: absolute;bottom: 0;width: 100%;height: 28px;background-image: linear-gradient(to top, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0));color:#fff;z-index:1000;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;padding: 0 5px;font-size: 14px">{{item.Titel}}</p>
 				</div>
 			</div>
 			<div v-else style="display: flex;justify-content: center;margin-top: 60px">
